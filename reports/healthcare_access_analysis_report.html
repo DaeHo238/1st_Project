@@ -7796,19 +7796,19 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=684abd75">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ec12f033">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="%EC%9D%98%EB%A3%8C-%EC%A0%91%EA%B7%BC%EC%84%B1%EC%9D%B4-%EA%B1%B4%EA%B0%95-%EA%B2%B0%EA%B3%BC%EC%97%90-%EB%AF%B8%EC%B9%98%EB%8A%94-%EC%98%81%ED%96%A5-%EB%B6%84%EC%84%9D">의료 접근성이 건강 결과에 미치는 영향 분석<a class="anchor-link" href="#%EC%9D%98%EB%A3%8C-%EC%A0%91%EA%B7%BC%EC%84%B1%EC%9D%B4-%EA%B1%B4%EA%B0%95-%EA%B2%B0%EA%B3%BC%EC%97%90-%EB%AF%B8%EC%B9%98%EB%8A%94-%EC%98%81%ED%96%A5-%EB%B6%84%EC%84%9D">¶</a></h1><p>BRFSS 2015 당뇨병 건강지표 데이터셋을 이용해 의료 접근성(<code>AnyHealthcare</code>, <code>NoDocbcCost</code>, <code>CholCheck</code>)이 건강 결과(<code>Diabetes_binary</code>, <code>GenHlth</code>, <code>PhysHlth</code>, <code>HighBP</code>, <code>HighChol</code>)에 미치는 영향을 분석한다.</p>
-<p>소득(<code>Income</code>), 연령(<code>Age</code>), 교육수준(<code>Education</code>)을 교란변수로 통제하여 접근성 변수의 독립적 효과를 추정하는 것이 핵심 질문이다.</p>
-<p><strong>진행 순서</strong>: 데이터 전처리 → EDA → 교란변수 선정 → 기초 모델링(로지스틱 회귀) → 예측 모델링 → 인사이트 정리</p>
+<p>소득(<code>Income</code>), 연령(<code>Age</code>), 교육수준(<code>Education</code>)을 교란변수로 통제하여 접근성 변수의 독립적 효과를 추정하는 것이 핵심 질문이다. 이 데이터셋을 고른 이유와 데이터 자체의 성격은 1절에서 자세히 다룬다.</p>
+<p><strong>진행 순서</strong>: 데이터 이해 → 데이터 전처리 → EDA → 교란변수 선정 → 기초 모델링(로지스틱 회귀) → 예측 모델링 → 합성데이터 검증 → 인사이트 정리</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e2e54601">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=eba079fd">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7849,17 +7849,41 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=88c54c35">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5145f6c2">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="1.-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%84%EC%B2%98%EB%A6%AC">1. 데이터 전처리<a class="anchor-link" href="#1.-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%84%EC%B2%98%EB%A6%AC">¶</a></h2><p>결측치, 중복행, 값 범위(코드북 대비 이상값)를 확인하고 분석에 쓸 변수들의 타입을 정리한다.</p>
+<h2 id="1.-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%9D%B4%ED%95%B4">1. 데이터 이해<a class="anchor-link" href="#1.-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%9D%B4%ED%95%B4">¶</a></h2><h3 id="%EC%9D%B4-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A5%BC-%EA%B3%A0%EB%A5%B8-%EC%9D%B4%EC%9C%A0">이 데이터를 고른 이유<a class="anchor-link" href="#%EC%9D%B4-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A5%BC-%EA%B3%A0%EB%A5%B8-%EC%9D%B4%EC%9C%A0">¶</a></h3><p>이 데이터셋에는 <code>AnyHealthcare</code>(의료 이용 수단 보유), <code>NoDocbcCost</code>(비용 때문에 병원 미방문 경험), <code>CholCheck</code>(정기검진 여부) 같은 <strong>의료 접근성을 직접 측정하는 변수</strong>가 포함돼 있다. 이런 변수를 가진 공개 데이터셋은 흔치 않아서, "의료 접근성이 건강 결과에 독립적인 영향을 미치는가"라는 질문을 실제 데이터로 검증해볼 수 있었다 — 데이터가 가진 이 특성이 이번 분석 주제를 고른 직접적인 이유다.</p>
+<h3 id="%ED%96%89%EA%B3%BC-%EC%BB%AC%EB%9F%BC">행과 컬럼<a class="anchor-link" href="#%ED%96%89%EA%B3%BC-%EC%BB%AC%EB%9F%BC">¶</a></h3><ul>
+<li><strong>행 하나의 의미</strong>: 2015년 미국 CDC의 BRFSS(Behavioral Risk Factor Surveillance System, 행동위험요인감시체계) 전화 설문에 응답한 성인 1명</li>
+<li><strong>기간과 범위</strong>: 2015년 한 해, 미국 성인 253,680명</li>
+<li><strong>컬럼 구성</strong>: 결과지표 1개(<code>Diabetes_binary</code>), 의료 접근성 3개, 만성질환·생활습관 지표 다수, 인구통계 4개(<code>Sex</code>, <code>Age</code>, <code>Education</code>, <code>Income</code>) — 전체 22개 컬럼의 의미와 코드는 <a href="../references/data_dictionary.md"><code>references/data_dictionary.md</code></a>에 정리했다.</li>
+<li><strong>출처와 저작권</strong>: CDC BRFSS 원자료는 미국 연방정부 공공데이터로 저작권 제한 없이 공개돼 있다. 이 프로젝트에서 쓰는 CSV는 Kaggle에 "Diabetes Health Indicators Dataset"이라는 이름으로 재배포된 파생 버전이다.</li>
+</ul>
+<h3 id="%EC%95%8C%EB%A0%A4%EC%A7%84-%ED%95%9C%EA%B3%84%EC%99%80-%ED%8E%B8%ED%96%A5">알려진 한계와 편향<a class="anchor-link" href="#%EC%95%8C%EB%A0%A4%EC%A7%84-%ED%95%9C%EA%B3%84%EC%99%80-%ED%8E%B8%ED%96%A5">¶</a></h3><ul>
+<li><strong>설문 가중치(survey weight) 없음</strong>: 원본 BRFSS는 주·인구집단별로 표본을 다르게 뽑는 복합표본설계라 전국 대표성을 맞추려면 가중치를 곱해야 하는데, 이 파생 데이터셋에는 그 가중치 컬럼이 빠져 있다.</li>
+<li><strong>인종/민족 변수 없음</strong>: 의료 접근성 격차 연구에서 중요한 변수인데 이 데이터셋에는 포함돼 있지 않아, 소득 외의 격차는 분석할 수 없다.</li>
+<li><strong>전부 자가보고(self-report)</strong>: 진단 여부, 생활습관, 체중·키(BMI 산출용)까지 모두 응답자가 직접 답한 값이라 사회적 바람직성 편향(운동·식습관은 과대보고, 체중은 과소보고 등)이 있을 수 있다.</li>
+<li><strong>지리 정보 없음</strong>: 주(state) 단위 식별자가 없어 지역별 접근성 격차는 볼 수 없다.</li>
+<li><strong>2015년 데이터</strong>: 오바마케어(ACA) 시행 초기 시점으로, 현재의 의료 접근성 상황과는 차이가 있을 수 있다.</li>
+</ul>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=35e58e0e">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8d485ed1">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="2.-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%84%EC%B2%98%EB%A6%AC">2. 데이터 전처리<a class="anchor-link" href="#2.-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%84%EC%B2%98%EB%A6%AC">¶</a></h2><p>결측치, 중복행, 값 범위(코드북 대비 이상값), 연속형 변수의 이상치를 확인하고 분석에 쓸 변수들의 타입을 정리한다.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e023b195">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7919,7 +7943,7 @@ memory usage: 42.6 MB
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=3a430cd9">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=01e3475f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7957,8 +7981,76 @@ Age [np.float64(1.0), np.float64(2.0), np.float64(3.0), np.float64(4.0), np.floa
 </div>
 </div>
 </div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=516e5bb5">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=03e91661">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 연속형 변수(BMI) 이상치 점검 - 이 데이터셋에서 유일한 연속형 변수</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"BMI"</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+
+<span class="n">q1</span><span class="p">,</span> <span class="n">q3</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"BMI"</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">([</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">])</span>
+<span class="n">iqr</span> <span class="o">=</span> <span class="n">q3</span> <span class="o">-</span> <span class="n">q1</span>
+<span class="n">lower</span><span class="p">,</span> <span class="n">upper</span> <span class="o">=</span> <span class="n">q1</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">iqr</span><span class="p">,</span> <span class="n">q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">iqr</span>
+<span class="n">outlier_ratio</span> <span class="o">=</span> <span class="p">((</span><span class="n">df</span><span class="p">[</span><span class="s2">"BMI"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lower</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"BMI"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">upper</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"IQR 기준 정상 범위:"</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">"~"</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">upper</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"이상치 비율: </span><span class="si">{</span><span class="n">outlier_ratio</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">4.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">"BMI"</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#4C72B0"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"BMI 분포 및 이상치"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>count    253680.000000
+mean         28.382364
+std           6.608694
+min          12.000000
+25%          24.000000
+50%          27.000000
+75%          31.000000
+max          98.000000
+Name: BMI, dtype: float64
+IQR 기준 정상 범위: 13.5 ~ 41.5
+이상치 비율: 3.88%
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
+<img alt="No description has been provided for this image" class="" src="data:image/png;base64,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"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b5e7bcde">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p><strong>이상치 처리 방침</strong>: IQR 기준 정상 범위는 13.5~41.5이고 전체의 3.9%가 이 범위를 벗어난다. 최댓값 98은 병적 고도비만(BMI 98 ≈ 키 170cm에 체중 283kg)에 해당해 극단적이지만, BMI는 의학적으로 이론상 가능한 범위(대략 10~100)를 벗어나지 않고 자료형 오류(음수, 문자 혼입 등)도 없다. 실제로 존재할 수 있는 값이므로 삭제나 절단(capping) 없이 그대로 유지한다 — 다만 7.1절의 Box-Tidwell 검정에서 확인하듯 극단값이 있는 연속형 변수라 로지스틱 회귀의 선형성 가정에 영향을 줄 수 있다는 점은 별도로 점검한다.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c72064c8">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7969,12 +8061,12 @@ Age [np.float64(1.0), np.float64(2.0), np.float64(3.0), np.float64(4.0), np.floa
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1777a361">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=086d9e21">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 해석 편의를 위한 라벨 매핑 (BRFSS 2015 코드북 기준)</span>
@@ -8000,7 +8092,7 @@ Age [np.float64(1.0), np.float64(2.0), np.float64(3.0), np.float64(4.0), np.floa
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8173,22 +8265,90 @@ Age [np.float64(1.0), np.float64(2.0), np.float64(3.0), np.float64(4.0), np.floa
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c4b08fec">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1773c625">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="2.-EDA---%EC%9D%98%EB%A3%8C-%EC%A0%91%EA%B7%BC%EC%84%B1-%EB%B3%80%EC%88%98-%EB%B6%84%ED%8F%AC">2. EDA - 의료 접근성 변수 분포<a class="anchor-link" href="#2.-EDA---%EC%9D%98%EB%A3%8C-%EC%A0%91%EA%B7%BC%EC%84%B1-%EB%B3%80%EC%88%98-%EB%B6%84%ED%8F%AC">¶</a></h2><p><code>AnyHealthcare</code>(보험/의료이용 가능 여부), <code>NoDocbcCost</code>(비용 때문에 병원 미방문 경험), <code>CholCheck</code>(5년 내 콜레스테롤 검사 여부)의 분포를 확인한다.</p>
+<h2 id="3.-EDA">3. EDA<a class="anchor-link" href="#3.-EDA">¶</a></h2><h3 id="3.1-%ED%83%80%EA%B9%83-%EB%B3%80%EC%88%98(Diabetes_binary)-%EB%B6%84%ED%8F%AC%EC%99%80-%ED%81%B4%EB%9E%98%EC%8A%A4-%EB%B6%88%EA%B7%A0%ED%98%95">3.1 타깃 변수(<code>Diabetes_binary</code>) 분포와 클래스 불균형<a class="anchor-link" href="#3.1-%ED%83%80%EA%B9%83-%EB%B3%80%EC%88%98(Diabetes_binary)-%EB%B6%84%ED%8F%AC%EC%99%80-%ED%81%B4%EB%9E%98%EC%8A%A4-%EB%B6%88%EA%B7%A0%ED%98%95">¶</a></h3><p>본격적인 탐색에 앞서, 결과지표인 <code>Diabetes_binary</code>의 분포부터 확인한다. 이후 모든 모델링(오즈비 추정, 예측 모델링)에서 이 클래스 불균형을 고려해야 한다.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=22cb506c">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=117ce022">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">diabetes_counts</span> <span class="o">=</span> <span class="n">df_eda</span><span class="p">[</span><span class="s2">"Diabetes_binary"</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+<span class="n">diabetes_ratio</span> <span class="o">=</span> <span class="n">df_eda</span><span class="p">[</span><span class="s2">"Diabetes_binary"</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">"count"</span><span class="p">:</span> <span class="n">diabetes_counts</span><span class="p">,</span> <span class="s2">"ratio"</span><span class="p">:</span> <span class="n">diabetes_ratio</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)}))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">diabetes_ratio</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">"bar"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s2">"#4C72B0"</span><span class="p">,</span> <span class="s2">"#DD8452"</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s2">"0 (없음)"</span><span class="p">,</span> <span class="s2">"1 (있음)"</span><span class="p">],</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"비율"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Diabetes_binary 클래스 분포"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>                  count   ratio
+Diabetes_binary                
+0.0              218334  0.8607
+1.0               35346  0.1393
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
+<img alt="No description has been provided for this image" class="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYAAAAGACAYAAACkx7W/AAAAOnRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjExLjEsIGh0dHBzOi8vbWF0cGxvdGxpYi5vcmcvctoD+AAAAAlwSFlzAAAPYQAAD2EBqD+naQAAK+1JREFUeJzt3Qu4zVX+x/EvjmvkrpkuokToSkiim4kpk0hNDanJ5F8ppVIqkykZeUo1FakJo3u6YIRK/BOGUFNJUm4hqXDc7/z+z2c9z97/vffZ+9jHwfntvd6v59nPOfu3f3vv376t71rftX5rFQuCIDAAgHeKF/UBAACKBgEAADxFAAAATxEAAMBTBAAA8BQBAAA8RQAAAE8RAADAUwQAAPAUAQDIYHfffbfVq1cvrctHH310QM/Rs2dPe//99/P8f7gMGjTIXnjhhXz3KYrjygYEAI/8/PPP1qJFC3vyySfTvs+nn35q1157rWWqt956yx544IH97vfVV1/ZWWed5fbPJI8//rgtWrRov5c2bdpYmTJlkhacyYLFwShMw1Qop3qd9Q7Ra88UOUV9ACgcFdBdu3aNXi9XrpwdffTR1rx5c7vuuuvsuOOOi96maZ/27dvnLoin9yZyyUYlSpSwKlWq5Nn+9NNPJy0sD4Y1a9a4SsfBMHjwYHfJzyWXXJLytmSvEwSArNC0aVN7+eWX3f9btmyxxYsX2/jx4+3yyy+3p556ylq2bOlu+81vfmOzZs0q0mNdsWKFa84/8sgjFiann366ffbZZ5Zpnn32WXvmmWfS2vdvf/ubHS7ffvutLViwwHbs2GFdunRxAagw7rrrLuvevXvK29MJWo8++qiNHDnSfc7ly5ePu+2NN96wfv362TvvvGOnnHKK+YIWQJbRF/uMM85wF7UClCNW7rdChQoWBj/99JP98MMPRX0YWePWW291l3Ty6BUrVjwsx6RKSO/evV3q7b333nM193vuucfCUFFSAMjNzc0TAHJzc91vpH79+uYT+gCyWOvWra1x48b273//u6gPBUUs0go81JTyUerxwgsvtD/96U82ZMgQmzNnjg0YMMB27959wI+rIJJf3v6DDz7Y72M0adLEihcv7gr7RLm5ua4PqLAtlUxDCyDLXXDBBTZ37lzr3Lmz6y9QyiCSLpKtW7e6/OiHH37oam6tWrWyhx9+2I444oi4x1m2bJlrQuuxlCdv1KiRa5Y3aNAgT1N6xIgRriCoWbOm3XLLLfb73/8+T1+FfrSxqau9e/fac8895zphN23aZCeddJJrvWifiKlTp7oCZenSpVa3bl0bOHCgnXDCCWm9D//9739dIfL1119byZIlXetItdJjjz3W3a7n/eKLL1xBFXtdQVRpNL3+3/72t3bTTTdZhw4d4h573bp19thjj9mMGTNsz5491q5dO7v//vtdYRP7WHrP1Glbq1Yte/31110qTPe977774h5PfTQXX3yxq63G9uEkpjzSKfSS+cc//mFt27bN93Hyy6cns3btWnvzzTddZeOOO+5wn7lUrlzZXn31VfceduzY0W688UbXIV26dOm0H/vee+91l8KK1PCTBYANGzbEfde8oQVhkLlmz54ddOnSJeXtn3zySXDDDTek3HfChAnBiBEjglWrVgXr1q0Lrr/++mDIkCFxj9+mTZugc+fOwccffxxs2rQpWLNmTfDCCy8ETZo0CVasWBHdd/jw4cF1110XLFy4MNi+fXvwxRdfuPvOnTt3v8f74IMPBnfeeWfwww8/BNu2bQumT58enHfeedHHX7RoUdC2bdtg8eLFwZYtW9yxPPfcc/t9f0aPHh107Ngx6Nq1qzsO3VevdcCAAcH5558fbN68Obrf/fffH3e/du3aBbfffnuwZMmSYOvWrcGUKVOCRo0audcVa+TIkcG7774b/Prrr8GPP/4YXHrppcF7770X91hXX3118OijjwYbN26Mbl+/fn1w9tlnx22TyZMnBzfeeGNwONx2223BpEmT9rtP3bp1o5fE/WfMmOE+56FDh7rvRyrff/990LdvX/d5JL7mQynx+NO5TNrPe5ItaAFkOdVIVeNNJbGmd/XVV9uYMWPitq1evdrV6jW6KFKTUk3ul19+sVdeecXVYHfu3Olq8xMnTrSyZctGO1aVnx47dqxrXqeycuVKV0PXfpFa87nnnmtXXnmlTZo0yXX+qWO7Ro0arsZfrFgxO++889wlHb/++quNGjUqmvdV60Y1dHVIjxs3zrWOktFrUs0+8v4praFa7LRp09xri7j++uvj7nfZZZe5YaWXXnppdJveK7VoYlMMqh2ff/759tprr7mWRYRqzEqjpCPdlkBsrf9ARO6frLNVQ4vTGTpZp04d69+/f9rPebBaOalGAPXs2dN9/wvz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"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f89cb4ab">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p><strong>시사점</strong>: 양성(당뇨 있음)이 13.9%(35,346명), 음성이 86.1%(218,334명)로 약 6.2:1의 뚜렷한 클래스 불균형이다. 이 때문에 정확도(accuracy)만으로 모델을 평가하면 "무조건 없음으로 예측"하는 모델도 86%가 나오는 함정이 있다 — 8절 예측 모델링에서 <code>class_weight="balanced"</code>를 쓰고 ROC-AUC·재현율을 핵심 지표로 삼은 이유가 여기에 있다.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=43391437">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="3.2-%EC%9D%98%EB%A3%8C-%EC%A0%91%EA%B7%BC%EC%84%B1-%EB%B3%80%EC%88%98-%EB%B6%84%ED%8F%AC">3.2 의료 접근성 변수 분포<a class="anchor-link" href="#3.2-%EC%9D%98%EB%A3%8C-%EC%A0%91%EA%B7%BC%EC%84%B1-%EB%B3%80%EC%88%98-%EB%B6%84%ED%8F%AC">¶</a></h3><p><code>AnyHealthcare</code>(보험/의료이용 가능 여부), <code>NoDocbcCost</code>(비용 때문에 병원 미방문 경험), <code>CholCheck</code>(5년 내 콜레스테롤 검사 여부)의 분포를 확인한다.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c52ea82c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">access_vars</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"AnyHealthcare"</span><span class="p">,</span> <span class="s2">"NoDocbcCost"</span><span class="p">,</span> <span class="s2">"CholCheck"</span><span class="p">]</span>
@@ -8247,7 +8407,7 @@ Name: proportion, dtype: float64
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f957184e">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=41addc72">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8258,22 +8418,22 @@ Name: proportion, dtype: float64
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7204842d">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9660390a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="3.-%EC%A0%91%EA%B7%BC%EC%84%B1-%EB%B3%80%EC%88%98-vs-%EA%B1%B4%EA%B0%95-%EA%B2%B0%EA%B3%BC:-%EA%B5%90%EC%B0%A8%EB%B6%84%EC%84%9D-%EB%B0%8F-%EC%B9%B4%EC%9D%B4%EC%A0%9C%EA%B3%B1%EA%B2%80%EC%A0%95">3. 접근성 변수 vs 건강 결과: 교차분석 및 카이제곱검정<a class="anchor-link" href="#3.-%EC%A0%91%EA%B7%BC%EC%84%B1-%EB%B3%80%EC%88%98-vs-%EA%B1%B4%EA%B0%95-%EA%B2%B0%EA%B3%BC:-%EA%B5%90%EC%B0%A8%EB%B6%84%EC%84%9D-%EB%B0%8F-%EC%B9%B4%EC%9D%B4%EC%A0%9C%EA%B3%B1%EA%B2%80%EC%A0%95">¶</a></h2><p>각 접근성 변수와 결과지표(<code>Diabetes_binary</code>, <code>PoorGenHlth</code>, <code>HighBP</code>, <code>HighChol</code>) 간 비율 차이와 통계적 유의성을 확인한다.</p>
+<h2 id="4.-%EC%A0%91%EA%B7%BC%EC%84%B1-%EB%B3%80%EC%88%98-vs-%EA%B1%B4%EA%B0%95-%EA%B2%B0%EA%B3%BC:-%EA%B5%90%EC%B0%A8%EB%B6%84%EC%84%9D-%EB%B0%8F-%EC%B9%B4%EC%9D%B4%EC%A0%9C%EA%B3%B1%EA%B2%80%EC%A0%95">4. 접근성 변수 vs 건강 결과: 교차분석 및 카이제곱검정<a class="anchor-link" href="#4.-%EC%A0%91%EA%B7%BC%EC%84%B1-%EB%B3%80%EC%88%98-vs-%EA%B1%B4%EA%B0%95-%EA%B2%B0%EA%B3%BC:-%EA%B5%90%EC%B0%A8%EB%B6%84%EC%84%9D-%EB%B0%8F-%EC%B9%B4%EC%9D%B4%EC%A0%9C%EA%B3%B1%EA%B2%80%EC%A0%95">¶</a></h2><p>각 접근성 변수와 결과지표(<code>Diabetes_binary</code>, <code>PoorGenHlth</code>, <code>HighBP</code>, <code>HighChol</code>) 간 비율 차이와 통계적 유의성을 확인한다.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=a0c58b81">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f506e931">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">outcome_vars</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Diabetes_binary"</span><span class="p">,</span> <span class="s2">"PoorGenHlth"</span><span class="p">,</span> <span class="s2">"HighBP"</span><span class="p">,</span> <span class="s2">"HighChol"</span><span class="p">]</span>
@@ -8303,7 +8463,7 @@ Name: proportion, dtype: float64
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[6]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8447,12 +8607,12 @@ Name: proportion, dtype: float64
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=a4ad219f">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e107414d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">access_vars</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -8483,7 +8643,7 @@ Name: proportion, dtype: float64
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7870ab53">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b2fff244">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8494,13 +8654,13 @@ Name: proportion, dtype: float64
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=798add23">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8757c69b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="4.-%EA%B5%90%EB%9E%80%EB%B3%80%EC%88%98-%EC%84%A0%EC%A0%95">4. 교란변수 선정<a class="anchor-link" href="#4.-%EA%B5%90%EB%9E%80%EB%B3%80%EC%88%98-%EC%84%A0%EC%A0%95">¶</a></h2><p>로지스틱 회귀에서 어떤 변수를 교란변수(통제변수)로 넣을지는 "조정 후 오즈비가 얼마나 바뀌었는가"로 사후에 정하는 게 아니라, <strong>노출(접근성)과 결과(당뇨) 양쪽에 모두 연관된 변수인가</strong>를 기준으로 사전에 정해야 한다. 아래 3단계로 후보를 스크리닝한다.</p>
+<h2 id="5.-%EA%B5%90%EB%9E%80%EB%B3%80%EC%88%98-%EC%84%A0%EC%A0%95">5. 교란변수 선정<a class="anchor-link" href="#5.-%EA%B5%90%EB%9E%80%EB%B3%80%EC%88%98-%EC%84%A0%EC%A0%95">¶</a></h2><p>로지스틱 회귀에서 어떤 변수를 교란변수(통제변수)로 넣을지는 "조정 후 오즈비가 얼마나 바뀌었는가"로 사후에 정하는 게 아니라, <strong>노출(접근성)과 결과(당뇨) 양쪽에 모두 연관된 변수인가</strong>를 기준으로 사전에 정해야 한다. 아래 3단계로 후보를 스크리닝한다.</p>
 <ol>
 <li>도메인 지식으로 후보 나열 (<code>Income</code>, <code>Age</code>, <code>Education</code>, <code>Sex</code>, <code>BMI</code>, <code>Smoker</code>, <code>PhysActivity</code>)</li>
 <li>접근성 변수·결과변수 양쪽과의 상관관계를 확인해, 두 조건을 동시에 만족하는지 통계적으로 스크리닝</li>
@@ -8509,12 +8669,12 @@ Name: proportion, dtype: float64
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=cf45132f">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b2743f75">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">candidates</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Income"</span><span class="p">,</span> <span class="s2">"Age"</span><span class="p">,</span> <span class="s2">"Education"</span><span class="p">,</span> <span class="s2">"Sex"</span><span class="p">,</span> <span class="s2">"BMI"</span><span class="p">,</span> <span class="s2">"Smoker"</span><span class="p">,</span> <span class="s2">"PhysActivity"</span><span class="p">]</span>
@@ -8534,7 +8694,7 @@ Name: proportion, dtype: float64
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8617,12 +8777,12 @@ Name: proportion, dtype: float64
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=bb5a98f2">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6ba4386e">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
@@ -8651,12 +8811,12 @@ Name: proportion, dtype: float64
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=ec55a2bf">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=aa6f8acf">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 조건 1: 접근성 변수들과의 평균 |상관관계| / 조건 2: 결과(Diabetes_binary)와의 |상관관계|</span>
@@ -8694,7 +8854,7 @@ Name: proportion, dtype: float64
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=31f5d651">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ba378092">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8706,7 +8866,7 @@ Name: proportion, dtype: float64
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b24a396a">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8d8757e0">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8722,22 +8882,22 @@ Name: proportion, dtype: float64
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=919092a3">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ce3d202f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="5.-%EA%B5%90%EB%9E%80%EB%B3%80%EC%88%98(%EC%86%8C%EB%93%9D)-%EC%8B%AC%EC%B8%B5-%EC%B8%B5%ED%99%94%EB%B6%84%EC%84%9D">5. 교란변수(소득) 심층 층화분석<a class="anchor-link" href="#5.-%EA%B5%90%EB%9E%80%EB%B3%80%EC%88%98(%EC%86%8C%EB%93%9D)-%EC%8B%AC%EC%B8%B5-%EC%B8%B5%ED%99%94%EB%B6%84%EC%84%9D">¶</a></h2><p>앞선 스크리닝에서 <code>Income</code>이 가장 확실한 교란변수 후보로 확인됐다. 소득 구간별로 접근성 변수와 결과지표가 어떻게 같이 움직이는지 좀 더 자세히 들여다본다.</p>
+<h2 id="6.-%EA%B5%90%EB%9E%80%EB%B3%80%EC%88%98(%EC%86%8C%EB%93%9D)-%EC%8B%AC%EC%B8%B5-%EC%B8%B5%ED%99%94%EB%B6%84%EC%84%9D">6. 교란변수(소득) 심층 층화분석<a class="anchor-link" href="#6.-%EA%B5%90%EB%9E%80%EB%B3%80%EC%88%98(%EC%86%8C%EB%93%9D)-%EC%8B%AC%EC%B8%B5-%EC%B8%B5%ED%99%94%EB%B6%84%EC%84%9D">¶</a></h2><p>앞선 스크리닝에서 <code>Income</code>이 가장 확실한 교란변수 후보로 확인됐다. 소득 구간별로 접근성 변수와 결과지표가 어떻게 같이 움직이는지 좀 더 자세히 들여다본다.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1cba1de2">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=90e4af65">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">income_order</span> <span class="o">=</span> <span class="p">[</span><span class="n">income_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">)]</span>
@@ -8759,7 +8919,7 @@ Name: proportion, dtype: float64
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8856,12 +9016,12 @@ Name: proportion, dtype: float64
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=d4144a78">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=4cb5472c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
@@ -8908,7 +9068,7 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a00bce19">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a0a726cc">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8919,23 +9079,24 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9e527145">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4a45e7d5">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="6.-%EA%B8%B0%EC%B4%88-%EB%AA%A8%EB%8D%B8%EB%A7%81---%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1-%ED%9A%8C%EA%B7%80-(%EC%98%A4%EC%A6%88%EB%B9%84-%EB%B9%84%EA%B5%90)">6. 기초 모델링 - 로지스틱 회귀 (오즈비 비교)<a class="anchor-link" href="#6.-%EA%B8%B0%EC%B4%88-%EB%AA%A8%EB%8D%B8%EB%A7%81---%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1-%ED%9A%8C%EA%B7%80-(%EC%98%A4%EC%A6%88%EB%B9%84-%EB%B9%84%EA%B5%90)">¶</a></h2><p>접근성 변수만 넣은 <strong>비보정(unadjusted) 모델</strong>과 <code>Income</code>, <code>Education</code>, <code>Age</code>, <code>Sex</code>, <code>BMI</code>를 통제한 <strong>보정(adjusted) 모델</strong>을 비교해, 접근성 변수의 오즈비가 교란변수 통제 후에도 유의하게 남는지 확인한다.</p>
+<h2 id="7.-%EA%B8%B0%EC%B4%88-%EB%AA%A8%EB%8D%B8%EB%A7%81---%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1-%ED%9A%8C%EA%B7%80-(%EC%98%A4%EC%A6%88%EB%B9%84-%EB%B9%84%EA%B5%90)">7. 기초 모델링 - 로지스틱 회귀 (오즈비 비교)<a class="anchor-link" href="#7.-%EA%B8%B0%EC%B4%88-%EB%AA%A8%EB%8D%B8%EB%A7%81---%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1-%ED%9A%8C%EA%B7%80-(%EC%98%A4%EC%A6%88%EB%B9%84-%EB%B9%84%EA%B5%90)">¶</a></h2><p>접근성 변수만 넣은 <strong>비보정(unadjusted) 모델</strong>과 <code>Income</code>, <code>Education</code>, <code>Age</code>, <code>Sex</code>, <code>BMI</code>를 통제한 <strong>보정(adjusted) 모델</strong>을 비교해, 접근성 변수의 오즈비가 교란변수 통제 후에도 유의하게 남는지 확인한다.</p>
+<p><strong>모델 선택 근거</strong>: 로지스틱 회귀를 쓰는 이유는 (1) 타깃이 이진 변수(<code>Diabetes_binary</code>)이고, (2) 계수를 오즈비(odds ratio)로 바꿔 "접근성이 결과에 미치는 영향의 방향과 크기"를 직관적으로 설명할 수 있기 때문이다. 이 절의 목적은 예측이 아니라 **설명(explanatory)**이므로, 예측 성능이 더 좋을 수 있는 트리 기반 모델 대신 해석 가능한 로지스틱 회귀를 택했다 — 예측 성능 자체는 8절에서 별도로 다룬다.</p>
 <p>타깃: <code>Diabetes_binary</code></p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=4fdfd516">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=9c2dce21">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">fit_logit_or</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
@@ -8973,7 +9134,7 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -9056,12 +9217,12 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f1b8a8c7">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1fc018e2">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 비포/애프터 슬로프(덤벨) 그래프: 비보정 -&gt; 보정으로 오즈비가 얼마나, 어느 방향으로 움직였는지 강조</span>
@@ -9118,7 +9279,7 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=947b0c6f">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1801fe10">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -9129,22 +9290,22 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=904c344e">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b4ce3d2e">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="6.1-%EB%AA%A8%EB%8D%B8-%EA%B0%80%EC%A0%95-%EC%A0%90%EA%B2%80:-%EB%8B%A4%EC%A4%91%EA%B3%B5%EC%84%A0%EC%84%B1(VIF)-&amp;-%EC%84%A0%ED%98%95%EC%84%B1(Box-Tidwell)">6.1 모델 가정 점검: 다중공선성(VIF) &amp; 선형성(Box-Tidwell)<a class="anchor-link" href="#6.1-%EB%AA%A8%EB%8D%B8-%EA%B0%80%EC%A0%95-%EC%A0%90%EA%B2%80:-%EB%8B%A4%EC%A4%91%EA%B3%B5%EC%84%A0%EC%84%B1(VIF)-&amp;-%EC%84%A0%ED%98%95%EC%84%B1(Box-Tidwell)">¶</a></h3><p>로지스틱 회귀 결과를 신뢰하려면 (1) 예측변수 간 다중공선성이 심하지 않은지, (2) 연속형 변수(<code>BMI</code>)와 로짓(log-odds) 사이에 선형 관계가 성립하는지 확인해야 한다.</p>
+<h3 id="7.1-%EB%AA%A8%EB%8D%B8-%EA%B0%80%EC%A0%95-%EC%A0%90%EA%B2%80:-%EB%8B%A4%EC%A4%91%EA%B3%B5%EC%84%A0%EC%84%B1(VIF)-&amp;-%EC%84%A0%ED%98%95%EC%84%B1(Box-Tidwell)">7.1 모델 가정 점검: 다중공선성(VIF) &amp; 선형성(Box-Tidwell)<a class="anchor-link" href="#7.1-%EB%AA%A8%EB%8D%B8-%EA%B0%80%EC%A0%95-%EC%A0%90%EA%B2%80:-%EB%8B%A4%EC%A4%91%EA%B3%B5%EC%84%A0%EC%84%B1(VIF)-&amp;-%EC%84%A0%ED%98%95%EC%84%B1(Box-Tidwell)">¶</a></h3><p>로지스틱 회귀 결과를 신뢰하려면 (1) 예측변수 간 다중공선성이 심하지 않은지, (2) 연속형 변수(<code>BMI</code>)와 로짓(log-odds) 사이에 선형 관계가 성립하는지 확인해야 한다.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=2c9193de">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=be1b8392">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.stats.outliers_influence</span><span class="w"> </span><span class="kn">import</span> <span class="n">variance_inflation_factor</span>
@@ -9166,7 +9327,7 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -9238,12 +9399,12 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6b6b98ae">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e28b1b41">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Box-Tidwell: BMI * ln(BMI) 상호작용항이 유의하면 선형성 가정 위반</span>
@@ -9265,7 +9426,7 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -9320,7 +9481,7 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=bdab0a20">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c4647e31">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -9331,22 +9492,22 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e51db2a5">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=79aa548b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="6.2-%EB%AF%BC%EA%B0%90%EB%8F%84-%EB%B6%84%EC%84%9D:-CholCheck-%EC%A0%9C%EC%99%B8-%EC%8B%9C-%EC%98%A4%EC%A6%88%EB%B9%84-%EB%B3%80%ED%99%94">6.2 민감도 분석: <code>CholCheck</code> 제외 시 오즈비 변화<a class="anchor-link" href="#6.2-%EB%AF%BC%EA%B0%90%EB%8F%84-%EB%B6%84%EC%84%9D:-CholCheck-%EC%A0%9C%EC%99%B8-%EC%8B%9C-%EC%98%A4%EC%A6%88%EB%B9%84-%EB%B3%80%ED%99%94">¶</a></h3><p><code>CholCheck</code>의 큰 오즈비(5.10)를 검출편향 — 검진을 받아야 진단이 기록되는 구조 — 으로 의심하고 있다면, 이 변수를 모델에서 아예 빼봤을 때 나머지 접근성 변수들의 오즈비가 얼마나 흔들리는지 확인해 그 의심을 검증해본다.</p>
+<h3 id="7.2-%EB%AF%BC%EA%B0%90%EB%8F%84-%EB%B6%84%EC%84%9D:-CholCheck-%EC%A0%9C%EC%99%B8-%EC%8B%9C-%EC%98%A4%EC%A6%88%EB%B9%84-%EB%B3%80%ED%99%94">7.2 민감도 분석: <code>CholCheck</code> 제외 시 오즈비 변화<a class="anchor-link" href="#7.2-%EB%AF%BC%EA%B0%90%EB%8F%84-%EB%B6%84%EC%84%9D:-CholCheck-%EC%A0%9C%EC%99%B8-%EC%8B%9C-%EC%98%A4%EC%A6%88%EB%B9%84-%EB%B3%80%ED%99%94">¶</a></h3><p><code>CholCheck</code>의 큰 오즈비(5.10)를 검출편향 — 검진을 받아야 진단이 기록되는 구조 — 으로 의심하고 있다면, 이 변수를 모델에서 아예 빼봤을 때 나머지 접근성 변수들의 오즈비가 얼마나 흔들리는지 확인해 그 의심을 검증해본다.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=59a72b8a">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=94e3e365">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">adj_model_nocc</span><span class="p">,</span> <span class="n">adj_or_nocc</span> <span class="o">=</span> <span class="n">fit_logit_or</span><span class="p">(</span>
@@ -9369,7 +9530,7 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[19]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -9436,12 +9597,12 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=52247722">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=67402342">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
@@ -9478,12 +9639,12 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=5b0d9ff6">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=5ead1e93">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 왜 변수마다 다르게 반응하는지: CholCheck와의 상관관계로 확인</span>
@@ -9518,7 +9679,7 @@ Name: AnyHealthcare, dtype: float64
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1b1aa8a7">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b6ac26c2">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -9530,7 +9691,7 @@ Name: AnyHealthcare, dtype: float64
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c3496b8a">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8893cfe8">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -9540,12 +9701,12 @@ Name: AnyHealthcare, dtype: float64
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=3007c8d7">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=96a0726b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">unadj_model_g</span><span class="p">,</span> <span class="n">unadj_or_g</span> <span class="o">=</span> <span class="n">fit_logit_or</span><span class="p">(</span>
@@ -9572,7 +9733,7 @@ Name: AnyHealthcare, dtype: float64
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[20]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[22]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -9656,7 +9817,7 @@ Name: AnyHealthcare, dtype: float64
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=dd91137a">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8101bce4">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -9667,27 +9828,28 @@ Name: AnyHealthcare, dtype: float64
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=932a616f">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3dd253b6">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="7.-%EC%98%88%EC%B8%A1-%EB%AA%A8%EB%8D%B8%EB%A7%81-%EB%B0%8F-%EC%84%B1%EB%8A%A5-%ED%8F%89%EA%B0%80">7. 예측 모델링 및 성능 평가<a class="anchor-link" href="#7.-%EC%98%88%EC%B8%A1-%EB%AA%A8%EB%8D%B8%EB%A7%81-%EB%B0%8F-%EC%84%B1%EB%8A%A5-%ED%8F%89%EA%B0%80">¶</a></h2><p>지금까지는 오즈비로 "접근성과 결과의 연관성 방향·크기"를 봤다. 이번에는 관점을 바꿔 <strong>접근성 변수만으로 당뇨를 얼마나 잘 예측할 수 있는지</strong>를, 전체 21개 변수를 다 쓴 모델과 비교해 확인한다. 두 모델의 성능 차이가 크다면, 접근성은 통계적으로 유의한 연관은 있지만 예측력 있는 신호는 아니라는 뜻이다.</p>
+<h2 id="8.-%EC%98%88%EC%B8%A1-%EB%AA%A8%EB%8D%B8%EB%A7%81-%EB%B0%8F-%EC%84%B1%EB%8A%A5-%ED%8F%89%EA%B0%80">8. 예측 모델링 및 성능 평가<a class="anchor-link" href="#8.-%EC%98%88%EC%B8%A1-%EB%AA%A8%EB%8D%B8%EB%A7%81-%EB%B0%8F-%EC%84%B1%EB%8A%A5-%ED%8F%89%EA%B0%80">¶</a></h2><p>지금까지는 오즈비로 "접근성과 결과의 연관성 방향·크기"를 봤다. 이번에는 관점을 바꿔 <strong>접근성 변수만으로 당뇨를 얼마나 잘 예측할 수 있는지</strong>를, 기준선(baseline) 모델·전체 21개 변수를 다 쓴 모델과 비교해 확인한다. 두 모델의 성능 차이가 크다면, 접근성은 통계적으로 유의한 연관은 있지만 예측력 있는 신호는 아니라는 뜻이다.</p>
 <ul>
+<li><strong>Baseline</strong>: 항상 최빈 클래스("당뇨 아님")로만 예측하는 <code>DummyClassifier</code> — 다른 모델이 이보다 나은지 비교하는 기준선</li>
 <li><strong>Model A (access-only)</strong>: <code>AnyHealthcare</code>, <code>NoDocbcCost</code>, <code>CholCheck</code> 3개 변수만 사용</li>
 <li><strong>Model B (full)</strong>: <code>Diabetes_binary</code>를 제외한 원본 21개 변수 모두 사용</li>
-<li>클래스 불균형(양성 13.9%)을 고려해 <code>class_weight="balanced"</code> 적용, 75/25 stratified train/test split</li>
 </ul>
+<p><strong>평가지표 선택 근거</strong>: 3.1절에서 확인했듯 타깃이 86.1% : 13.9%로 불균형하다. 이런 데이터에서는 정확도(accuracy)만으로 평가하면 "무조건 없음"이라고만 예측해도 86%가 나오는 함정이 있으므로, 클래스 불균형에 영향을 덜 받는 <strong>ROC-AUC</strong>와 양성 클래스의 **재현율(recall)**을 핵심 지표로 함께 본다. 같은 이유로 <code>LogisticRegression(class_weight="balanced")</code>를 적용해 소수 클래스(당뇨 있음)에 더 많은 가중치를 준다. 학습/검증 데이터는 75/25로 stratified split해 두 세트의 클래스 비율을 동일하게 유지하고, 학습에 쓴 데이터로 평가하지 않도록(데이터 누수 방지) 분리한다.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=23413208">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=379ccdbb">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
@@ -9742,12 +9904,112 @@ Model B (full features) ROC-AUC: 0.8219
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=8aaa1fb6">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b551dae5">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.dummy</span><span class="w"> </span><span class="kn">import</span> <span class="n">DummyClassifier</span>
+
+<span class="n">baseline</span> <span class="o">=</span> <span class="n">DummyClassifier</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s2">"most_frequent"</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_a</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">baseline_pred</span> <span class="o">=</span> <span class="n">baseline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_a</span><span class="p">)</span>
+<span class="n">baseline_acc</span> <span class="o">=</span> <span class="p">(</span><span class="n">baseline_pred</span> <span class="o">==</span> <span class="n">y_test</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">baseline_recall</span> <span class="o">=</span> <span class="p">((</span><span class="n">baseline_pred</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">model_b_acc</span> <span class="o">=</span> <span class="p">((</span><span class="n">proba_b</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">==</span> <span class="n">y_test</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">model_a_acc</span> <span class="o">=</span> <span class="p">((</span><span class="n">proba_a</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">==</span> <span class="n">y_test</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="n">baseline_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">"accuracy"</span><span class="p">:</span> <span class="p">[</span><span class="n">baseline_acc</span><span class="p">,</span> <span class="n">model_a_acc</span><span class="p">,</span> <span class="n">model_b_acc</span><span class="p">],</span>
+    <span class="s2">"recall(양성)"</span><span class="p">:</span> <span class="p">[</span><span class="n">baseline_recall</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="s2">"ROC-AUC"</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">auc_a</span><span class="p">,</span> <span class="n">auc_b</span><span class="p">],</span>
+<span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">"Baseline(최빈값)"</span><span class="p">,</span> <span class="s2">"Model A(access-only)"</span><span class="p">,</span> <span class="s2">"Model B(full)"</span><span class="p">])</span>
+<span class="n">baseline_table</span><span class="p">[</span><span class="s2">"recall(양성)"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">baseline_recall</span><span class="p">,</span>
+    <span class="p">((</span><span class="n">proba_a</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span>
+    <span class="p">((</span><span class="n">proba_b</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span>
+<span class="p">]</span>
+<span class="n">baseline_table</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[24]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>accuracy</th>
+<th>recall(양성)</th>
+<th>ROC-AUC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>Baseline(최빈값)</th>
+<td>0.8607</td>
+<td>0.0000</td>
+<td>0.5000</td>
+</tr>
+<tr>
+<th>Model A(access-only)</th>
+<td>0.1946</td>
+<td>0.9684</td>
+<td>0.5317</td>
+</tr>
+<tr>
+<th>Model B(full)</th>
+<td>0.7327</td>
+<td>0.7620</td>
+<td>0.8219</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d8fbd42a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p><strong>시사점</strong>: 기준선(항상 "당뇨 아님" 예측)의 정확도는 86.1%로 얼핏 높아 보이지만, 정의상 당뇨 환자를 단 한 명도 잡아내지 못한다(재현율 0%) — 정확도만 보고 모델을 판단하면 안 되는 이유를 그대로 보여준다. Access-only 모델은 정확도(19%)만 보면 기준선보다도 나빠 보이지만, 재현율은 97%로 정반대의 트레이드오프를 택한 것이고 ROC-AUC(0.53)로 보면 기준선(0.5)과 별 차이가 없다. Full 모델만이 기준선 대비 ROC-AUC(0.82)와 재현율(76%)을 동시에 크게 개선해, 실질적으로 기준선을 능가하는 유일한 모델이다.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=2ec7511c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -9779,12 +10041,12 @@ Model B (full features) ROC-AUC: 0.8219
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=30f505b3">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=4811dae2">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"=== Model A (access-only) classification report (threshold 0.5) ==="</span><span class="p">)</span>
@@ -9843,7 +10105,7 @@ weighted avg       0.86      0.73      0.77     63420
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=96734ffc">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=94b3e2b3">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -9854,33 +10116,33 @@ weighted avg       0.86      0.73      0.77     63420
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0d84afd4">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=66f0c583">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="8.-%ED%95%A9%EC%84%B1%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B2%80%EC%A6%9D:-%EB%B0%A9%EB%B2%95%EB%A1%A0%EC%9D%B4-%EC%8B%A4%EC%A0%9C%EB%A1%9C-%EC%9E%91%EB%8F%99%ED%95%98%EB%8A%94%EA%B0%80">8. 합성데이터 검증: 방법론이 실제로 작동하는가<a class="anchor-link" href="#8.-%ED%95%A9%EC%84%B1%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B2%80%EC%A6%9D:-%EB%B0%A9%EB%B2%95%EB%A1%A0%EC%9D%B4-%EC%8B%A4%EC%A0%9C%EB%A1%9C-%EC%9E%91%EB%8F%99%ED%95%98%EB%8A%94%EA%B0%80">¶</a></h2><p>지금까지 "교란변수를 통제하면 편향이 줄어든다", "<code>CholCheck</code>의 큰 오즈비는 검출편향일 것이다"라고 해석해왔다. 하지만 실제 데이터에는 '진짜 정답'이 없어서 이 해석이 맞는지 직접 증명할 수는 없었다. 여기서는 정답(진짜 효과 크기, 진짜 당뇨 여부)을 직접 정해놓은 합성데이터를 만들어, 지금까지 쓴 분석 방법이 그 정답을 실제로 잘 찾아내는지 검증한다.</p>
+<h2 id="9.-%ED%95%A9%EC%84%B1%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B2%80%EC%A6%9D:-%EB%B0%A9%EB%B2%95%EB%A1%A0%EC%9D%B4-%EC%8B%A4%EC%A0%9C%EB%A1%9C-%EC%9E%91%EB%8F%99%ED%95%98%EB%8A%94%EA%B0%80">9. 합성데이터 검증: 방법론이 실제로 작동하는가<a class="anchor-link" href="#9.-%ED%95%A9%EC%84%B1%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B2%80%EC%A6%9D:-%EB%B0%A9%EB%B2%95%EB%A1%A0%EC%9D%B4-%EC%8B%A4%EC%A0%9C%EB%A1%9C-%EC%9E%91%EB%8F%99%ED%95%98%EB%8A%94%EA%B0%80">¶</a></h2><p>지금까지 "교란변수를 통제하면 편향이 줄어든다", "<code>CholCheck</code>의 큰 오즈비는 검출편향일 것이다"라고 해석해왔다. 하지만 실제 데이터에는 '진짜 정답'이 없어서 이 해석이 맞는지 직접 증명할 수는 없었다. 여기서는 정답(진짜 효과 크기, 진짜 당뇨 여부)을 직접 정해놓은 합성데이터를 만들어, 지금까지 쓴 분석 방법이 그 정답을 실제로 잘 찾아내는지 검증한다.</p>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=98d52f1c">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=168916a3">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="8.1-%EC%8B%A4%ED%97%98-1-%E2%80%94-%EA%B5%90%EB%9E%80%EB%B3%80%EC%88%98%EB%A5%BC-%ED%86%B5%EC%A0%9C%ED%95%98%EB%A9%B4-%EC%A0%95%EB%A7%90-%ED%8E%B8%ED%96%A5%EC%9D%B4-%EC%A4%84%EC%96%B4%EB%93%9C%EB%8A%94%EA%B0%80">8.1 실험 1 — 교란변수를 통제하면 정말 편향이 줄어드는가<a class="anchor-link" href="#8.1-%EC%8B%A4%ED%97%98-1-%E2%80%94-%EA%B5%90%EB%9E%80%EB%B3%80%EC%88%98%EB%A5%BC-%ED%86%B5%EC%A0%9C%ED%95%98%EB%A9%B4-%EC%A0%95%EB%A7%90-%ED%8E%B8%ED%96%A5%EC%9D%B4-%EC%A4%84%EC%96%B4%EB%93%9C%EB%8A%94%EA%B0%80">¶</a></h3><p><code>Income</code>(교란변수)이 <code>barrier</code>(접근성 장벽)와 <code>diabetes</code>(결과) 둘 다에 영향을 주도록 20만 명 규모의 가상 데이터를 만든다. <code>barrier</code>가 당뇨에 미치는 <strong>"진짜" 오즈비를 1.3으로 미리 정해놓고</strong> 시작한다 — 실제 데이터에서는 알 수 없는 값이지만, 합성데이터에서는 우리가 정한 값이므로 정답을 알고 있다.</p>
+<h3 id="9.1-%EC%8B%A4%ED%97%98-1-%E2%80%94-%EA%B5%90%EB%9E%80%EB%B3%80%EC%88%98%EB%A5%BC-%ED%86%B5%EC%A0%9C%ED%95%98%EB%A9%B4-%EC%A0%95%EB%A7%90-%ED%8E%B8%ED%96%A5%EC%9D%B4-%EC%A4%84%EC%96%B4%EB%93%9C%EB%8A%94%EA%B0%80">9.1 실험 1 — 교란변수를 통제하면 정말 편향이 줄어드는가<a class="anchor-link" href="#9.1-%EC%8B%A4%ED%97%98-1-%E2%80%94-%EA%B5%90%EB%9E%80%EB%B3%80%EC%88%98%EB%A5%BC-%ED%86%B5%EC%A0%9C%ED%95%98%EB%A9%B4-%EC%A0%95%EB%A7%90-%ED%8E%B8%ED%96%A5%EC%9D%B4-%EC%A4%84%EC%96%B4%EB%93%9C%EB%8A%94%EA%B0%80">¶</a></h3><p><code>Income</code>(교란변수)이 <code>barrier</code>(접근성 장벽)와 <code>diabetes</code>(결과) 둘 다에 영향을 주도록 20만 명 규모의 가상 데이터를 만든다. <code>barrier</code>가 당뇨에 미치는 <strong>"진짜" 오즈비를 1.3으로 미리 정해놓고</strong> 시작한다 — 실제 데이터에서는 알 수 없는 값이지만, 합성데이터에서는 우리가 정한 값이므로 정답을 알고 있다.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e173896a">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c0185fe9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
@@ -9916,7 +10178,7 @@ weighted avg       0.86      0.73      0.77     63420
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[24]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -9959,12 +10221,12 @@ weighted avg       0.86      0.73      0.77     63420
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=25ac45a4">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=7071c4df">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
@@ -9998,7 +10260,7 @@ weighted avg       0.86      0.73      0.77     63420
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fcb1a557">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4bf9e402">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -10009,22 +10271,22 @@ weighted avg       0.86      0.73      0.77     63420
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=dcc3000c">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=37967f94">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="8.2-%EC%8B%A4%ED%97%98-2-%E2%80%94-%EA%B2%80%EC%B6%9C%ED%8E%B8%ED%96%A5%EC%9D%80-%EC%A0%95%EB%A7%90-%EC%98%A4%EC%A6%88%EB%B9%84%EB%A5%BC-%EB%B6%80%ED%92%80%EB%A6%AC%EB%8A%94%EA%B0%80">8.2 실험 2 — 검출편향은 정말 오즈비를 부풀리는가<a class="anchor-link" href="#8.2-%EC%8B%A4%ED%97%98-2-%E2%80%94-%EA%B2%80%EC%B6%9C%ED%8E%B8%ED%96%A5%EC%9D%80-%EC%A0%95%EB%A7%90-%EC%98%A4%EC%A6%88%EB%B9%84%EB%A5%BC-%EB%B6%80%ED%92%80%EB%A6%AC%EB%8A%94%EA%B0%80">¶</a></h3><p>이번엔 <code>screening</code>(검진, <code>CholCheck</code>에 대응)이 <strong>진짜 당뇨 여부와는 완전히 무관하도록</strong>(진짜 인과효과 없음, OR=1) 설계한다. 대신 검진을 받은 사람은 실제 당뇨가 있을 때 95% 확률로 "진단"되고, 안 받은 사람은 40%만 진단되도록 — 즉 검진이 결과를 바꾸는 게 아니라 <strong>발견 확률만 바꾸도록</strong> 설계한다.</p>
+<h3 id="9.2-%EC%8B%A4%ED%97%98-2-%E2%80%94-%EA%B2%80%EC%B6%9C%ED%8E%B8%ED%96%A5%EC%9D%80-%EC%A0%95%EB%A7%90-%EC%98%A4%EC%A6%88%EB%B9%84%EB%A5%BC-%EB%B6%80%ED%92%80%EB%A6%AC%EB%8A%94%EA%B0%80">9.2 실험 2 — 검출편향은 정말 오즈비를 부풀리는가<a class="anchor-link" href="#9.2-%EC%8B%A4%ED%97%98-2-%E2%80%94-%EA%B2%80%EC%B6%9C%ED%8E%B8%ED%96%A5%EC%9D%80-%EC%A0%95%EB%A7%90-%EC%98%A4%EC%A6%88%EB%B9%84%EB%A5%BC-%EB%B6%80%ED%92%80%EB%A6%AC%EB%8A%94%EA%B0%80">¶</a></h3><p>이번엔 <code>screening</code>(검진, <code>CholCheck</code>에 대응)이 <strong>진짜 당뇨 여부와는 완전히 무관하도록</strong>(진짜 인과효과 없음, OR=1) 설계한다. 대신 검진을 받은 사람은 실제 당뇨가 있을 때 95% 확률로 "진단"되고, 안 받은 사람은 40%만 진단되도록 — 즉 검진이 결과를 바꾸는 게 아니라 <strong>발견 확률만 바꾸도록</strong> 설계한다.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c7a4ec6f">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1f8e25dd">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">rng2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
@@ -10054,7 +10316,7 @@ weighted avg       0.86      0.73      0.77     63420
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[26]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -10093,12 +10355,12 @@ weighted avg       0.86      0.73      0.77     63420
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=2220ef4b">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=09477145">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">))</span>
@@ -10132,7 +10394,7 @@ weighted avg       0.86      0.73      0.77     63420
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5921355d">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7770dc98">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -10143,7 +10405,7 @@ weighted avg       0.86      0.73      0.77     63420
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0898da97">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=469fd2ba">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -10154,14 +10416,15 @@ weighted avg       0.86      0.73      0.77     63420
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=59579cec">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=015f23f8">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="9.-%EC%A2%85%ED%95%A9-%EA%B2%B0%EB%A1%A0-%EB%B0%8F-%ED%95%9C%EA%B3%84">9. 종합 결론 및 한계<a class="anchor-link" href="#9.-%EC%A2%85%ED%95%A9-%EA%B2%B0%EB%A1%A0-%EB%B0%8F-%ED%95%9C%EA%B3%84">¶</a></h2><h3 id="%EC%A2%85%ED%95%A9-%EA%B2%B0%EB%A1%A0">종합 결론<a class="anchor-link" href="#%EC%A2%85%ED%95%A9-%EA%B2%B0%EB%A1%A0">¶</a></h3><ul>
-<li><strong>교란변수는 상관관계 스크리닝(4절)으로 사전에 선정했다.</strong> <code>Income</code>, <code>Age</code>, <code>Education</code>, <code>Sex</code>는 접근성·결과 양쪽과 모두 연관돼 교란변수 조건을 만족했고, <code>BMI</code>는 결과와는 강하게 연관되지만 접근성과는 거의 무관해 "교란변수"보다는 "매개변수 가능성이 있는 독립 위험요인"으로 구분해 다뤘다.</li>
+<h2 id="10.-%EC%A2%85%ED%95%A9-%EA%B2%B0%EB%A1%A0-%EB%B0%8F-%ED%95%9C%EA%B3%84">10. 종합 결론 및 한계<a class="anchor-link" href="#10.-%EC%A2%85%ED%95%A9-%EA%B2%B0%EB%A1%A0-%EB%B0%8F-%ED%95%9C%EA%B3%84">¶</a></h2><h3 id="%EC%A2%85%ED%95%A9-%EA%B2%B0%EB%A1%A0">종합 결론<a class="anchor-link" href="#%EC%A2%85%ED%95%A9-%EA%B2%B0%EB%A1%A0">¶</a></h3><ul>
+<li><strong>교란변수는 상관관계 스크리닝(5절)으로 사전에 선정했다.</strong> <code>Income</code>, <code>Age</code>, <code>Education</code>, <code>Sex</code>는 접근성·결과 양쪽과 모두 연관돼 교란변수 조건을 만족했고, <code>BMI</code>는 결과와는 강하게 연관되지만 접근성과는 거의 무관해 "교란변수"보다는 "매개변수 가능성이 있는 독립 위험요인"으로 구분해 다뤘다.</li>
+<li><strong>기준선 대비 성능도 확인했다.</strong> 항상 "당뇨 아님"으로만 예측하는 기준선은 정확도 86.1%지만 재현율은 0%다. Full 예측 모델(ROC-AUC 0.822, 재현율 76%)만이 기준선을 실질적으로 능가했고, Access-only 모델(ROC-AUC 0.532)은 기준선과 사실상 차이가 없었다.</li>
 <li>세 접근성 지표 중 <strong><code>NoDocbcCost</code>(비용장벽)가 가장 신뢰할 수 있고 일관된 신호</strong>다. 소득·연령 등을 통제한 뒤에도 당뇨(OR 1.37)와 주관적 건강불량(OR 2.46) 모두에서 독립적 효과가 유의하게 남는다.</li>
 <li><strong><code>CholCheck</code>, <code>AnyHealthcare</code>의 매우 큰 오즈비는 인과효과가 아니라 검출편향으로 봐야 한다.</strong> 검진·의료 이용이 있어야 질환이 진단·기록되는 구조이므로, "접근성이 질병을 유발한다"가 아니라 "접근성이 있어야 문제가 발견된다"는 방향으로 해석해야 한다.</li>
 <li><strong>소득에 따른 사회경제적 구배가 뚜렷하다.</strong> 소득이 낮을수록 비용장벽·나쁜 건강상태·당뇨 유병률이 모두 단조적으로 증가하며, <code>Income</code>은 접근성과 결과 모두를 설명하는 핵심 교란변수임이 반복적으로 확인됐다.</li>
@@ -10169,12 +10432,14 @@ weighted avg       0.86      0.73      0.77     63420
 <li><code>BMI</code>와 로짓 사이 선형성 가정은 위반되지만(Box-Tidwell 유의), 다중공선성(VIF 1.02~1.35)은 문제가 없어 오즈비 추정 자체의 신뢰도는 양호하다.</li>
 <li><strong>합성데이터 실험으로 방법론 자체를 검증했다.</strong> 진짜 오즈비를 아는 가상 데이터에서, 교란변수를 통제하니 추정치(2.14→1.29)가 진짜 값(1.3)에 정확히 수렴했고, 검진 여부가 진짜 결과와 무관하게 설계됐음에도 발견 확률 차이만으로 오즈비가 1.02→2.69로 부풀려지는 것을 확인했다 — 앞선 해석들이 통계적으로 타당한 논리에 기반했음을 뒷받침한다.</li>
 </ul>
-<h3 id="%ED%95%9C%EA%B3%84">한계<a class="anchor-link" href="#%ED%95%9C%EA%B3%84">¶</a></h3><ul>
+<h3 id="%ED%95%9C%EA%B3%84">한계<a class="anchor-link" href="#%ED%95%9C%EA%B3%84">¶</a></h3><p>데이터 자체의 한계(설문 가중치·인종 변수 부재, 자가보고 편향 등)는 1절에 정리했다. 아래는 이번 분석·해석 과정에서 생기는 추가 한계다.</p>
+<ul>
 <li><code>Diabetes_binary</code>는 실제 유병 여부가 아니라 **"진단받은 적 있는지"**를 묻는 자가보고 변수라, 접근성이 낮은 집단은 진단 자체를 못 받아 유병률이 과소추정됐을 가능성이 있다(미진단 편향).</li>
 <li>단면(cross-sectional) 데이터이므로 오즈비는 연관성이지 인과관계를 증명하지 않는다.</li>
 <li>전체 표본의 9.5%(24,206행)가 완전 중복행이지만, 구간화된 범주형 변수 특성상 데이터 오류로 보기 어려워 삭제하지 않고 유지했다 — 결과 해석 시 참고할 것.</li>
 </ul>
-<h3 id="%EC%A0%95%EC%B1%85-%EC%8B%9C%EC%82%AC%EC%A0%90">정책 시사점<a class="anchor-link" href="#%EC%A0%95%EC%B1%85-%EC%8B%9C%EC%82%AC%EC%A0%90">¶</a></h3><p>의료 접근성 중에서도 **비용 부담 해소(<code>NoDocbcCost</code> 개선)**가 저소득층의 전반적 건강 수준 개선과 가장 강하게 연결되는 지표다. 소득 하위 20~25%(Income 구간 1~2, 연소득 15,000달러 미만) 계층에 의료비 지원을 집중하는 것이 비용 대비 효과가 가장 클 것으로 예상된다. 반면 보험 가입률(<code>AnyHealthcare</code>)이나 정기검진율(<code>CholCheck</code>) 자체를 결과지표로 사용할 때는 검출편향을 반드시 함께 언급해야 한다.</p>
+<h3 id="%EC%A0%95%EC%B1%85-%EC%8B%9C%EC%82%AC%EC%A0%90-%EB%B0%8F-%ED%99%9C%EC%9A%A9-%EC%A0%9C%EC%95%88">정책 시사점 및 활용 제안<a class="anchor-link" href="#%EC%A0%95%EC%B1%85-%EC%8B%9C%EC%82%AC%EC%A0%90-%EB%B0%8F-%ED%99%9C%EC%9A%A9-%EC%A0%9C%EC%95%88">¶</a></h3><p>의료 접근성 중에서도 **비용 부담 해소(<code>NoDocbcCost</code> 개선)**가 저소득층의 전반적 건강 수준 개선과 가장 강하게 연결되는 지표다. 소득 하위 20~25%(Income 구간 1~2, 연소득 15,000달러 미만) 계층에 의료비 지원을 집중하는 것이 비용 대비 효과가 가장 클 것으로 예상된다.</p>
+<p><strong>누가 무엇을 다르게 할 수 있는가</strong>: 지자체·공공보건 정책 담당자는 저소득층 대상 병원비 지원·1차의료 바우처 사업을 설계할 때 소득 하위 20~25% 구간을 우선 대상으로 삼을 수 있고, 지역 1차의료기관은 비용 문제로 내원을 미루는 환자를 위한 분할 결제·저비용 진료 옵션을 우선 안내할 수 있다. 반면 보험 가입률(<code>AnyHealthcare</code>)이나 정기검진율(<code>CholCheck</code>) 자체를 결과지표로 사용할 때는 검출편향을 반드시 함께 언급해야 한다.</p>
 </div>
 </div>
 </div>
