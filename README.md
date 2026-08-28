@@ -38,6 +38,8 @@ project1/
 
 ## 실행 방법
 
+**요구 사항**: Python 3.14 이상 (`.python-version`에 고정, 매우 최신 버전이라 시스템에 없다면 [uv](https://docs.astral.sh/uv/)가 `uv sync` 시 자동으로 받아 설치합니다)
+
 ```bash
 # 방법 A: uv 사용 (권장 — pyproject.toml/uv.lock 기준)
 uv sync
@@ -65,10 +67,10 @@ uv run jupyter nbconvert --to notebook --execute --inplace notebooks/1.0-healthc
 5. **교란변수 선정** — 후보 변수를 접근성·결과지표 양쪽과의 상관관계로 스크리닝(히트맵·산점도), 매개변수 가능성까지 논리적으로 재검토해 핵심 교란변수 확정
 6. **소득 심층 층화분석** — 소득 구간별 접근성·결과지표 변화, 스피어만 상관
 7. **로지스틱 회귀(오즈비)** — 모델 선택 근거 명시, 비보정 vs 보정(소득·연령·성별·교육·BMI 통제) 모델 비교
-   - 7.1 모델 가정 점검 — 다중공선성(VIF), 선형성(Box-Tidwell 검정)
+   - 7.1 모델 가정 점검 — 다중공선성(VIF), 선형성(Box-Tidwell 검정), BMI 구간화 모델과의 오즈비 비교로 비선형성이 결론에 영향을 주는지 검증
    - 7.2 민감도 분석 — `CholCheck` 제외 시 나머지 접근성 변수 오즈비 변화로 검출편향 의심을 검증
    - 보조 결과지표(`PoorGenHlth`, 주관적 건강상태) 모델
-8. **예측 모델링 및 성능 평가** — 평가지표 선택 근거 명시, 기준선(`DummyClassifier`) vs 접근성 변수만 사용한 모델 vs 전체 21개 변수 모델 비교 (Train/Test split, ROC-AUC, 분류 리포트, 혼동행렬)
+8. **예측 모델링 및 성능 평가** — 평가지표 선택 근거 명시, 기준선(`DummyClassifier`) vs 접근성 변수만 사용한 모델 vs 전체 21개 변수 모델 비교, 5-fold 교차검증으로 결과 재확인, 표준화 계수 기반 변수 중요도 분석 (Train/Test split, ROC-AUC, 분류 리포트, 혼동행렬)
 9. **합성데이터 검증** — 진짜 효과 크기를 아는 가상 데이터로 (1) 교란변수 통제가 추정치를 진짜 값에 수렴시키는지, (2) 검진율 차이만으로 검출편향이 오즈비를 부풀리는지 직접 시뮬레이션으로 증명
 10. **종합 결론, 한계, 정책 시사점 및 활용 제안**
 
@@ -91,3 +93,7 @@ uv run jupyter nbconvert --to notebook --execute --inplace notebooks/1.0-healthc
 ## 기술 스택
 
 Python, pandas, NumPy, scikit-learn, statsmodels, matplotlib, seaborn, Jupyter — [uv](https://docs.astral.sh/uv/)로 의존성 관리
+
+## 저자
+
+이대호 ([GitHub @DaeHo238](https://github.com/DaeHo238))

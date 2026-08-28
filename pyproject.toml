@@ -1,7 +1,7 @@
 [project]
 name = "project1"
 version = "0.1.0"
-description = "Add your description here"
+description = "BRFSS 2015 당뇨병 건강지표 데이터로 의료 접근성이 건강 결과에 미치는 영향을 분석하는 프로젝트"
 readme = "README.md"
 authors = [
     { name = "Daeho Lee", email = "dleogh2006@naver.com" }
@@ -17,12 +17,8 @@ dependencies = [
     "statsmodels>=0.15.0",
 ]
 
-[project.scripts]
-project1 = "project1:main"
-
-[build-system]
-requires = ["uv_build>=0.12.5,<0.13.0"]
-build-backend = "uv_build"
+[tool.uv]
+package = false
 
 [dependency-groups]
 dev = [
