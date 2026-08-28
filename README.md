@@ -7,9 +7,30 @@ BRFSS 2015 당뇨병 건강지표 데이터셋(25만 행)을 이용해 **의료 
 - **발견하고 싶은 문제**: 의료 접근성이 낮은 집단(비용 부담으로 병원을 못 간 경험, 보험 미보유)이 실제로 만성질환 관리와 건강 결과에서 더 취약한가? 소득·연령 같은 교란요인을 통제해도 접근성 자체의 독립적 영향이 남는가?
 - **이유**: 의료 접근성 격차가 건강 결과에 실질적 영향을 미치는지 데이터로 검증하면, 어떤 소득·연령대에 접근성 개선 정책이 우선적으로 필요한지 근거를 제시할 수 있습니다.
 
+## 프로젝트 구조
+
+```
+project1/
+├── data/
+│   ├── raw/          # 원본 데이터. 절대 수정하지 않음
+│   ├── interim/       # 전처리 중간 산출물 (현재 비어 있음)
+│   └── processed/     # 분석·모델링에 바로 쓰는 데이터 (현재 비어 있음)
+├── notebooks/         # 1.0-healthcare-access-analysis.ipynb
+├── models/            # 학습한 모델 파일 (현재 비어 있음 — 별도 저장 요청 시 추가)
+├── reports/
+│   ├── healthcare_access_analysis_report.html  # 노트북 실행 결과 HTML 리포트
+│   └── figures/       # 리포트에 쓰인 그래프 개별 PNG
+├── references/
+│   └── data_dictionary.md  # 컬럼 사전 및 코드북
+├── requirements.txt    # pip 재현용 의존성 목록 (uv 환경에서 export)
+├── pyproject.toml / uv.lock  # 기본 의존성 관리 (uv)
+└── README.md
+```
+
 ## 데이터
 
-- **파일**: `data/diabetes_binary_health_indicators_BRFSS2015.csv`
+- **파일**: `data/raw/diabetes_binary_health_indicators_BRFSS2015.csv`
+- **컬럼 사전**: [`references/data_dictionary.md`](references/data_dictionary.md)
 - **출처**: CDC BRFSS(Behavioral Risk Factor Surveillance System) 2015 설문조사를 기반으로 가공된 공개 파생 데이터셋(Diabetes Health Indicators Dataset)
 - **규모**: 253,680행 × 22열, 결측치 없음, 전부 이진/순서형 코드(float64)
 - **타깃**: `Diabetes_binary` (당뇨 진단 여부, 양성 비율 13.9%)
@@ -18,21 +39,24 @@ BRFSS 2015 당뇨병 건강지표 데이터셋(25만 행)을 이용해 **의료 
 ## 실행 방법
 
 ```bash
-# 의존성 설치 (uv 사용)
+# 방법 A: uv 사용 (권장 — pyproject.toml/uv.lock 기준)
 uv sync
 
-# data/diabetes_binary_health_indicators_BRFSS2015.csv 준비 후
+# 방법 B: pip 사용
+pip install -r requirements.txt
+
+# data/raw/diabetes_binary_health_indicators_BRFSS2015.csv 준비 후
 
 # 노트북 실행 (Jupyter)
-uv run jupyter lab notebooks/healthcare_access_analysis.ipynb
+uv run jupyter lab notebooks/1.0-healthcare-access-analysis.ipynb
 
 # 또는 커맨드라인에서 전체 재실행
-uv run jupyter nbconvert --to notebook --execute --inplace notebooks/healthcare_access_analysis.ipynb
+uv run jupyter nbconvert --to notebook --execute --inplace notebooks/1.0-healthcare-access-analysis.ipynb
 ```
 
 ## 분석 파이프라인
 
-`notebooks/healthcare_access_analysis.ipynb`
+`notebooks/1.0-healthcare-access-analysis.ipynb`
 
 1. **데이터 전처리** — 결측치/중복행/값 범위 점검, 중복행 처리 방침 명시
 2. **EDA** — 접근성 변수(`AnyHealthcare`, `NoDocbcCost`, `CholCheck`) 분포

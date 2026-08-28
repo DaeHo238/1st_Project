@@ -9,8 +9,13 @@ wheels/
 # Virtual environments
 .venv
 
-# Data (download instructions in README)
-data/
+# Data (download instructions in README) — keep folder skeleton, ignore actual data files
+data/raw/*
+data/interim/*
+data/processed/*
+!data/raw/.gitkeep
+!data/interim/.gitkeep
+!data/processed/.gitkeep
 
 # Jupyter checkpoints
 .ipynb_checkpoints/
