@@ -1,0 +1,486 @@
+<meta charset="utf-8">
+<title>접근성은 건강 결과에 영향을 미치는가</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans+KR:wght@300;400;500;600&amp;display=swap">
+<style>
+:root{
+  --ground:#eef1f4; --surface:#ffffff; --panel:#f7f9fb;
+  --ink:#12181f; --ink-2:#3d4854; --ink-3:#6b7885; --line:#d7dde4; --line-soft:#e6ebf0;
+  --signal:#0687ac; --bias:#bc7733; --null:#8a94a0;
+  --shadow:0 1px 2px rgba(18,24,31,.06), 0 8px 24px -16px rgba(18,24,31,.28);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+  --ground:#12161c; --surface:#191d24; --panel:#1e232b;
+    --ink:#e8edf2; --ink-2:#b3bdc8; --ink-3:#8794a1; --line:#2c333d; --line-soft:#242a33;
+    --signal:#1d90b5; --bias:#c6803d; --null:#7c8894;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#12161c; --surface:#191d24; --panel:#1e232b;
+    --ink:#e8edf2; --ink-2:#b3bdc8; --ink-3:#8794a1; --line:#2c333d; --line-soft:#242a33;
+    --signal:#1d90b5; --bias:#c6803d; --null:#7c8894;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--ground); color:var(--ink);
+  font-family:"IBM Plex Sans KR","Malgun Gothic",system-ui,sans-serif;
+  line-height:1.65; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px; margin:0 auto; padding:40px 24px 64px; display:flex; flex-direction:column; gap:38px}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+
+.eyebrow{font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ink-3); margin:0 0 14px}
+h1{font-size:clamp(26px,3.4vw,38px); line-height:1.24; font-weight:600; margin:0;
+  letter-spacing:-.015em; text-wrap:balance; max-width:22ch}
+.verdict{font-family:"Gowun Batang","Batang",serif; font-weight:700;
+  font-size:clamp(19px,2.3vw,26px); line-height:1.55; margin:22px 0 0; padding-left:20px;
+  border-left:3px solid var(--signal); max-width:44ch; text-wrap:balance}
+.verdict em{font-style:normal; color:var(--signal)}
+
+.facts{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px;
+  background:var(--line-soft); border:1px solid var(--line-soft); border-radius:8px; overflow:hidden}
+.fact{background:var(--surface); padding:14px 18px}
+.fact dt{font-size:11.5px; letter-spacing:.06em; color:var(--ink-3); margin:0 0 4px}
+.fact dd{margin:0; font-size:19px; font-weight:500}
+
+.verdicts{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px}
+.vcard{background:var(--surface); border:1px solid var(--line); border-radius:10px;
+  padding:20px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:9px}
+.vcard .q{font-size:13.5px; color:var(--ink-3); margin:0}
+.vcard .a{font-size:24px; font-weight:600; margin:0; letter-spacing:-.01em}
+.vcard .why{font-size:13px; color:var(--ink-2); margin:0; line-height:1.55}
+.vcard .why b{color:var(--ink); font-weight:500}
+.vcard.yes{border-top:3px solid var(--signal)}
+.vcard.no{border-top:3px solid var(--null)}
+.vcard.unknown{border-top:3px solid var(--bias)}
+.vcard.yes .a{color:var(--signal)}
+.vcard.unknown .a{color:var(--bias)}
+
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:10px;
+  padding:22px 24px 18px; box-shadow:var(--shadow)}
+.panel h2{font-size:15px; font-weight:600; margin:0 0 4px; letter-spacing:-.005em}
+.panel .sub{font-size:12.5px; color:var(--ink-3); margin:0 0 16px; line-height:1.55}
+.duo{display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:20px}
+.chartbox{overflow-x:auto}
+svg{display:block; width:100%; height:auto; min-width:320px}
+
+.legend{display:flex; flex-wrap:wrap; gap:16px; margin:0 0 12px; padding:0; list-style:none;
+  font-size:12.5px; color:var(--ink-2)}
+.legend li{display:flex; align-items:center; gap:7px}
+.swatch{width:11px; height:11px; border-radius:3px; flex:none}
+.swatch.signal{background:var(--signal)}
+.swatch.bias{background:var(--bias)}
+
+.grid{stroke:var(--line-soft); stroke-width:1}
+.ax{stroke:var(--line); stroke-width:1}
+.ref{stroke:var(--ink-3); stroke-width:1; stroke-dasharray:3 3}
+.reflabel{fill:var(--ink-3); font-size:10.5px; font-family:"IBM Plex Mono",monospace}
+.tick{fill:var(--ink-3); font-size:11px; font-family:"IBM Plex Mono",monospace}
+.tick.tiny{font-size:9.5px}
+.axtitle{fill:var(--ink-3); font-size:11.5px}
+.grouplabel{fill:var(--ink-2); font-size:12px; font-weight:600}
+.varname{fill:var(--ink); font-size:12.5px}
+.val{fill:var(--ink); font-size:12.5px; font-family:"IBM Plex Mono",monospace; font-weight:500}
+.hit,.hit-dot{fill:transparent}
+.row .ci,.row .cap{stroke-width:2}
+.signal .ci,.signal .cap{stroke:var(--signal)}
+.bias .ci,.bias .cap{stroke:var(--bias)}
+.signal .pt,.signal .dot{fill:var(--signal); stroke:var(--surface); stroke-width:2}
+.bias .pt,.bias .dot{fill:var(--bias); stroke:var(--surface); stroke-width:2}
+.signal .bar{fill:var(--signal)}
+.null .bar{fill:var(--null)}
+.line{fill:none; stroke-width:2; stroke-linejoin:round}
+.line.signal{stroke:var(--signal)}
+.line.bias{stroke:var(--bias)}
+.endlabel{font-size:11px; font-family:"IBM Plex Mono",monospace; font-weight:500}
+.endlabel.signal{fill:var(--signal)}
+.endlabel.bias{fill:var(--bias)}
+.row:hover .pt,.row:focus-visible .pt,.row:hover .dot,.row:focus-visible .dot{r:7}
+.row:focus-visible{outline:2px solid var(--signal); outline-offset:2px}
+
+.insight-head{font-size:15px; font-weight:600; margin:0 0 4px}
+.insight-sub{font-size:12.5px; color:var(--ink-3); margin:0 0 16px; line-height:1.55}
+.flow{display:grid; grid-template-columns:repeat(auto-fit,minmax(224px,1fr)); gap:14px}
+.step{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:18px}
+.step .k{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ink-3); display:block; margin-bottom:8px}
+.step h3{font-size:14.5px; margin:0 0 7px; font-weight:600; line-height:1.45}
+.step p{margin:0; font-size:12.5px; color:var(--ink-2); line-height:1.6}
+.step.dont h3{color:var(--bias)}
+
+.close{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px}
+.close h2{font-size:14px; font-weight:600; margin:0 0 10px}
+.close ul{margin:0; padding-left:18px; font-size:13px; color:var(--ink-2); line-height:1.7}
+.close li{margin-bottom:5px}
+.close b{color:var(--ink); font-weight:500}
+
+details{border-top:1px solid var(--line-soft); padding-top:14px; margin-top:14px}
+summary{cursor:pointer; font-size:12.5px; color:var(--ink-2); font-weight:500}
+summary:focus-visible{outline:2px solid var(--signal); outline-offset:3px; border-radius:3px}
+table{border-collapse:collapse; width:100%; margin-top:12px; font-size:12.5px}
+th,td{text-align:left; padding:7px 10px; border-bottom:1px solid var(--line-soft)}
+th{color:var(--ink-3); font-weight:500; font-size:11.5px; letter-spacing:.04em}
+td.n{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; text-align:right}
+caption{text-align:left; font-size:12px; color:var(--ink-3); padding:10px 0 2px}
+
+footer{color:var(--ink-3); font-size:12px; line-height:1.7; border-top:1px solid var(--line); padding-top:18px}
+
+#tip{position:fixed; pointer-events:none; opacity:0; transform:translate(-50%,-150%);
+  background:var(--ink); color:var(--ground); padding:6px 10px; border-radius:6px;
+  font-size:12px; font-family:"IBM Plex Mono",monospace; white-space:nowrap; z-index:9;
+  transition:opacity .12s ease}
+#tip.on{opacity:1}
+@media (prefers-reduced-motion:reduce){*{transition:none !important}}
+</style>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">BRFSS 2015 · 미국 성인 253,680명 · 22개 변수</p>
+    <h1>의료 접근성은 건강 결과에 영향을 미치는가</h1>
+    <p class="verdict">비용 때문에 진료를 못 받은 경험은 나쁜 건강 상태와 <em>확실하게 함께 나타난다.</em> 다만 그것이 원인인지는 이 데이터로 알 수 없다.</p>
+  </header>
+
+  <dl class="facts">
+    <div class="fact"><dt>분석 표본</dt><dd class="mono">253,680</dd></div>
+    <div class="fact"><dt>당뇨 유병 (자가보고)</dt><dd class="mono">13.9%</dd></div>
+    <div class="fact"><dt>비용장벽 경험</dt><dd class="mono">8.4%</dd></div>
+    <div class="fact"><dt>검증한 접근성 지표</dt><dd class="mono">3개</dd></div>
+  </dl>
+
+  <section class="verdicts">
+    <article class="vcard yes">
+      <p class="q">접근성과 건강 결과에 연관이 있는가</p>
+      <p class="a">있다</p>
+      <p class="why">세 지표 중 <b>NoDocbcCost</b> 하나. 보정 후 주관적 건강불량 OR 2.46, 당뇨 OR 1.37로 모두 유의하다.</p>
+    </article>
+    <article class="vcard no">
+      <p class="q">개인의 당뇨를 예측할 수 있는가</p>
+      <p class="a">없다</p>
+      <p class="why">접근성 3개 모델 ROC-AUC <b>0.532</b>. 부스팅 트리로 바꿔도 0.5317로 같아, 모델이 아니라 데이터의 문제다.</p>
+    </article>
+    <article class="vcard unknown">
+      <p class="q">접근성이 건강 악화의 원인인가</p>
+      <p class="a">알 수 없다</p>
+      <p class="why">단면 데이터라 &quot;비용장벽 → 건강 악화&quot;와 &quot;건강 악화 → 비용 부담&quot;을 가릴 수 없다.</p>
+    </article>
+  </section>
+
+  <section class="panel">
+    <h2>접근성 지표별 보정 오즈비</h2>
+    <p class="sub">점은 오즈비, 가로선은 95% 신뢰구간이다. 구간이 OR 1.0 기준선에 닿지 않으면 통계적으로 유의하다. 색은 그 크기를 실제 신호로 볼 수 있는지에 대한 판정을 나타낸다.</p>
+    <ul class="legend">
+      <li><span class="swatch signal"></span>실제 신호로 볼 수 있는 지표</li>
+      <li><span class="swatch bias"></span>검출편향으로 해석해야 하는 지표</li>
+    </ul>
+    <div class="chartbox"><svg viewBox="0 0 780 344" role="img" aria-label="접근성 지표별 보정 오즈비와 95% 신뢰구간">
+<line class="ax" x1="250" y1="44" x2="250" y2="296"/>
+<line class="grid" x1="272.3" y1="44" x2="272.3" y2="296"/>
+<text class="tick" x="272.3" y="314" text-anchor="middle">1</text>
+<line class="grid" x1="358.2" y1="44" x2="358.2" y2="296"/>
+<text class="tick" x="358.2" y="314" text-anchor="middle">1.5</text>
+<line class="grid" x1="419.1" y1="44" x2="419.1" y2="296"/>
+<text class="tick" x="419.1" y="314" text-anchor="middle">2</text>
+<line class="grid" x1="505.0" y1="44" x2="505.0" y2="296"/>
+<text class="tick" x="505.0" y="314" text-anchor="middle">3</text>
+<line class="grid" x1="565.9" y1="44" x2="565.9" y2="296"/>
+<text class="tick" x="565.9" y="314" text-anchor="middle">4</text>
+<line class="grid" x1="613.2" y1="44" x2="613.2" y2="296"/>
+<text class="tick" x="613.2" y="314" text-anchor="middle">5</text>
+<line class="grid" x1="651.8" y1="44" x2="651.8" y2="296"/>
+<text class="tick" x="651.8" y="314" text-anchor="middle">6</text>
+<line class="ref" x1="272.3" y1="36" x2="272.3" y2="296"/>
+<text class="reflabel" x="272.3" y="30" text-anchor="middle">OR 1.0 — 차이 없음</text>
+<text class="grouplabel" x="14" y="64">당뇨 (Diabetes_binary)</text>
+<g class="row bias" data-tip="CholCheck · OR 5.10 (95% CI 4.47–5.82)" tabindex="0">
+<rect class="hit" x="250" y="75" width="422" height="26"/>
+<text class="varname" x="236" y="92" text-anchor="end">CholCheck</text>
+<line class="ci" x1="589.3" y1="88" x2="645.4" y2="88"/>
+<line class="cap" x1="589.3" y1="83" x2="589.3" y2="93"/>
+<line class="cap" x1="645.4" y1="83" x2="645.4" y2="93"/>
+<circle class="pt" cx="617.3" cy="88" r="5.5"/>
+<text class="val" x="690" y="92">5.10</text>
+</g>
+<g class="row signal" data-tip="NoDocbcCost · OR 1.37 (95% CI 1.31–1.43)" tabindex="0">
+<rect class="hit" x="250" y="105" width="422" height="26"/>
+<text class="varname" x="236" y="122" text-anchor="end">NoDocbcCost</text>
+<line class="ci" x1="329.5" y1="118" x2="347.4" y2="118"/>
+<line class="cap" x1="329.5" y1="113" x2="329.5" y2="123"/>
+<line class="cap" x1="347.4" y1="113" x2="347.4" y2="123"/>
+<circle class="pt" cx="338.5" cy="118" r="5.5"/>
+<text class="val" x="690" y="122">1.37</text>
+</g>
+<g class="row bias" data-tip="AnyHealthcare · OR 1.23 (95% CI 1.15–1.31)" tabindex="0">
+<rect class="hit" x="250" y="135" width="422" height="26"/>
+<text class="varname" x="236" y="152" text-anchor="end">AnyHealthcare</text>
+<line class="ci" x1="302.3" y1="148" x2="329.0" y2="148"/>
+<line class="cap" x1="302.3" y1="143" x2="302.3" y2="153"/>
+<line class="cap" x1="329.0" y1="143" x2="329.0" y2="153"/>
+<circle class="pt" cx="315.7" cy="148" r="5.5"/>
+<text class="val" x="690" y="152">1.23</text>
+</g>
+<text class="grouplabel" x="14" y="192">주관적 건강불량 (PoorGenHlth)</text>
+<g class="row signal" data-tip="NoDocbcCost · OR 2.46 (95% CI 2.37–2.55)" tabindex="0">
+<rect class="hit" x="250" y="203" width="422" height="26"/>
+<text class="varname" x="236" y="220" text-anchor="end">NoDocbcCost</text>
+<line class="ci" x1="455.3" y1="216" x2="470.2" y2="216"/>
+<line class="cap" x1="455.3" y1="211" x2="455.3" y2="221"/>
+<line class="cap" x1="470.2" y1="211" x2="470.2" y2="221"/>
+<circle class="pt" cx="462.7" cy="216" r="5.5"/>
+<text class="val" x="690" y="220">2.46</text>
+</g>
+<g class="row bias" data-tip="CholCheck · OR 1.78 (95% CI 1.65–1.91)" tabindex="0">
+<rect class="hit" x="250" y="233" width="422" height="26"/>
+<text class="varname" x="236" y="250" text-anchor="end">CholCheck</text>
+<line class="ci" x1="378.6" y1="246" x2="409.1" y2="246"/>
+<line class="cap" x1="378.6" y1="241" x2="378.6" y2="251"/>
+<line class="cap" x1="409.1" y1="241" x2="409.1" y2="251"/>
+<circle class="pt" cx="393.9" cy="246" r="5.5"/>
+<text class="val" x="690" y="250">1.78</text>
+</g>
+<g class="row bias" data-tip="AnyHealthcare · OR 1.32 (95% CI 1.26–1.39)" tabindex="0">
+<rect class="hit" x="250" y="263" width="422" height="26"/>
+<text class="varname" x="236" y="280" text-anchor="end">AnyHealthcare</text>
+<line class="ci" x1="320.6" y1="276" x2="342.0" y2="276"/>
+<line class="cap" x1="320.6" y1="271" x2="320.6" y2="281"/>
+<line class="cap" x1="342.0" y1="271" x2="342.0" y2="281"/>
+<circle class="pt" cx="331.3" cy="276" r="5.5"/>
+<text class="val" x="690" y="280">1.32</text>
+</g>
+<text class="axtitle" x="461" y="336" text-anchor="middle">보정 오즈비 (로그 축) — 소득·연령·교육·성별·BMI 통제</text>
+</svg></div>
+    <details>
+      <summary>수치를 표로 보기</summary>
+      <table>
+        <caption>보정 모델 오즈비 — 소득·연령·교육·성별·BMI 통제 (노트북 7절)</caption>
+        <thead><tr><th>결과지표</th><th>접근성 변수</th><th>오즈비</th><th>95% 신뢰구간</th><th>판정</th></tr></thead>
+        <tbody><tr><td>당뇨 (Diabetes_binary)</td><td>CholCheck</td><td class="n">5.10</td><td class="n">4.47 – 5.82</td><td>검출편향</td></tr><tr><td>당뇨 (Diabetes_binary)</td><td>NoDocbcCost</td><td class="n">1.37</td><td class="n">1.31 – 1.43</td><td>실제 신호</td></tr><tr><td>당뇨 (Diabetes_binary)</td><td>AnyHealthcare</td><td class="n">1.23</td><td class="n">1.15 – 1.31</td><td>검출편향</td></tr><tr><td>주관적 건강불량 (PoorGenHlth)</td><td>NoDocbcCost</td><td class="n">2.46</td><td class="n">2.37 – 2.55</td><td>실제 신호</td></tr><tr><td>주관적 건강불량 (PoorGenHlth)</td><td>CholCheck</td><td class="n">1.78</td><td class="n">1.65 – 1.91</td><td>검출편향</td></tr><tr><td>주관적 건강불량 (PoorGenHlth)</td><td>AnyHealthcare</td><td class="n">1.32</td><td class="n">1.26 – 1.39</td><td>검출편향</td></tr></tbody>
+      </table>
+    </details>
+  </section>
+
+  <section class="duo">
+    <div class="panel">
+      <h2>연관이 있어도 개인은 못 맞힌다</h2>
+      <p class="sub">접근성 지표만 쓴 모델은 무작위 기준선에서 거의 움직이지 않는다. 같은 데이터에 임상·인구 변수를 모두 넣으면 0.82까지 오른다 — 한계는 당뇨의 예측 가능성이 아니라 접근성 지표의 정보량에 있다.</p>
+      <div class="chartbox"><svg viewBox="0 0 470 236" role="img" aria-label="모델별 ROC-AUC 비교">
+<line class="grid" x1="176" y1="26" x2="176" y2="180"/>
+<text class="tick" x="176" y="198" text-anchor="middle">0</text>
+<line class="grid" x1="232.5" y1="26" x2="232.5" y2="180"/>
+<text class="tick" x="232.5" y="198" text-anchor="middle">0.25</text>
+<line class="grid" x1="289.0" y1="26" x2="289.0" y2="180"/>
+<text class="tick" x="289.0" y="198" text-anchor="middle">0.5</text>
+<line class="grid" x1="345.5" y1="26" x2="345.5" y2="180"/>
+<text class="tick" x="345.5" y="198" text-anchor="middle">0.75</text>
+<line class="grid" x1="402.0" y1="26" x2="402.0" y2="180"/>
+<text class="tick" x="402.0" y="198" text-anchor="middle">1</text>
+<line class="ref" x1="289.0" y1="20" x2="289.0" y2="180"/>
+<text class="reflabel" x="289.0" y="14" text-anchor="middle">0.5 — 무작위</text>
+<g class="row null" data-tip="기준선 (최빈값) · ROC-AUC 0.5000" tabindex="0">
+<rect class="hit" x="176" y="29" width="226" height="26"/>
+<text class="varname" x="164" y="46" text-anchor="end">기준선 (최빈값)</text>
+<rect class="bar" x="176" y="34" width="113.0" height="16" rx="4"/>
+<text class="val" x="298.0" y="46">0.500</text>
+</g>
+<g class="row null" data-tip="접근성 3개 (로지스틱) · ROC-AUC 0.5317" tabindex="0">
+<rect class="hit" x="176" y="63" width="226" height="26"/>
+<text class="varname" x="164" y="80" text-anchor="end">접근성 3개 (로지스틱)</text>
+<rect class="bar" x="176" y="68" width="120.2" height="16" rx="4"/>
+<text class="val" x="305.2" y="80">0.532</text>
+</g>
+<g class="row signal" data-tip="전체 21개 (로지스틱) · ROC-AUC 0.8219" tabindex="0">
+<rect class="hit" x="176" y="97" width="226" height="26"/>
+<text class="varname" x="164" y="114" text-anchor="end">전체 21개 (로지스틱)</text>
+<rect class="bar" x="176" y="102" width="185.7" height="16" rx="4"/>
+<text class="val" x="370.7" y="114">0.822</text>
+</g>
+<g class="row signal" data-tip="전체 21개 (부스팅 트리) · ROC-AUC 0.8295" tabindex="0">
+<rect class="hit" x="176" y="131" width="226" height="26"/>
+<text class="varname" x="164" y="148" text-anchor="end">전체 21개 (부스팅 트리)</text>
+<rect class="bar" x="176" y="136" width="187.5" height="16" rx="4"/>
+<text class="val" x="372.5" y="148">0.830</text>
+</g>
+<text class="axtitle" x="289" y="220" text-anchor="middle">ROC-AUC (당뇨 예측, 테스트셋)</text>
+</svg></div>
+      <details>
+        <summary>수치를 표로 보기</summary>
+        <table><thead><tr><th>모델</th><th>ROC-AUC</th></tr></thead><tbody><tr><td>기준선 (최빈값)</td><td class="n">0.5000</td></tr><tr><td>접근성 3개 (로지스틱)</td><td class="n">0.5317</td></tr><tr><td>전체 21개 (로지스틱)</td><td class="n">0.8219</td></tr><tr><td>전체 21개 (부스팅 트리)</td><td class="n">0.8295</td></tr></tbody></table>
+      </details>
+    </div>
+    <div class="panel">
+      <h2>소득이 접근성과 건강을 함께 끌고 간다</h2>
+      <p class="sub">소득이 낮을수록 비용장벽과 당뇨가 나란히 단조 증가한다. 최하위군은 최상위군 대비 비용장벽 7.1배, 당뇨 3.1배다. 두 값 모두 비율이라 하나의 축에서 읽는다.</p>
+      <ul class="legend">
+        <li><span class="swatch signal"></span>비용장벽 경험률</li>
+        <li><span class="swatch bias"></span>당뇨 유병률</li>
+      </ul>
+      <div class="chartbox"><svg viewBox="0 0 470 236" role="img" aria-label="소득 구간별 비용장벽 경험률과 당뇨 유병률">
+<line class="grid" x1="52" y1="172.0" x2="424" y2="172.0"/>
+<text class="tick" x="44" y="176.0" text-anchor="end">0%</text>
+<line class="grid" x1="52" y1="121.3" x2="424" y2="121.3"/>
+<text class="tick" x="44" y="125.3" text-anchor="end">10%</text>
+<line class="grid" x1="52" y1="70.6" x2="424" y2="70.6"/>
+<text class="tick" x="44" y="74.6" text-anchor="end">20%</text>
+<text class="tick tiny" x="52.0" y="190" text-anchor="middle">&lt;10k</text>
+<text class="tick tiny" x="105.1" y="190" text-anchor="middle">10-15k</text>
+<text class="tick tiny" x="158.3" y="190" text-anchor="middle">15-20k</text>
+<text class="tick tiny" x="211.4" y="190" text-anchor="middle">20-25k</text>
+<text class="tick tiny" x="264.6" y="190" text-anchor="middle">25-35k</text>
+<text class="tick tiny" x="317.7" y="190" text-anchor="middle">35-50k</text>
+<text class="tick tiny" x="370.9" y="190" text-anchor="middle">50-75k</text>
+<text class="tick tiny" x="424.0" y="190" text-anchor="middle">75k+</text>
+<polyline class="line signal" points="52.0,63.6 105.1,77.1 158.3,83.6 211.4,96.9 264.6,114.7 317.7,130.0 370.9,141.3 424.0,156.7"/>
+<g class="row signal" data-tip="&lt;10k · 비용장벽 경험률 21.4%" tabindex="0">
+<circle class="hit-dot" cx="52.0" cy="63.6" r="12"/>
+<circle class="dot" cx="52.0" cy="63.6" r="4.5"/>
+</g>
+<g class="row signal" data-tip="10-15k · 비용장벽 경험률 18.7%" tabindex="0">
+<circle class="hit-dot" cx="105.1" cy="77.1" r="12"/>
+<circle class="dot" cx="105.1" cy="77.1" r="4.5"/>
+</g>
+<g class="row signal" data-tip="15-20k · 비용장벽 경험률 17.4%" tabindex="0">
+<circle class="hit-dot" cx="158.3" cy="83.6" r="12"/>
+<circle class="dot" cx="158.3" cy="83.6" r="4.5"/>
+</g>
+<g class="row signal" data-tip="20-25k · 비용장벽 경험률 14.8%" tabindex="0">
+<circle class="hit-dot" cx="211.4" cy="96.9" r="12"/>
+<circle class="dot" cx="211.4" cy="96.9" r="4.5"/>
+</g>
+<g class="row signal" data-tip="25-35k · 비용장벽 경험률 11.3%" tabindex="0">
+<circle class="hit-dot" cx="264.6" cy="114.7" r="12"/>
+<circle class="dot" cx="264.6" cy="114.7" r="4.5"/>
+</g>
+<g class="row signal" data-tip="35-50k · 비용장벽 경험률 8.3%" tabindex="0">
+<circle class="hit-dot" cx="317.7" cy="130.0" r="12"/>
+<circle class="dot" cx="317.7" cy="130.0" r="4.5"/>
+</g>
+<g class="row signal" data-tip="50-75k · 비용장벽 경험률 6.1%" tabindex="0">
+<circle class="hit-dot" cx="370.9" cy="141.3" r="12"/>
+<circle class="dot" cx="370.9" cy="141.3" r="4.5"/>
+</g>
+<g class="row signal" data-tip="75k+ · 비용장벽 경험률 3.0%" tabindex="0">
+<circle class="hit-dot" cx="424.0" cy="156.7" r="12"/>
+<circle class="dot" cx="424.0" cy="156.7" r="4.5"/>
+</g>
+<text class="endlabel signal" x="63.0" y="52.6">21.4%</text>
+<text class="endlabel signal" x="418.0" y="145.7" text-anchor="end">3.0%</text>
+<polyline class="line bias" points="52.0,48.8 105.1,39.2 158.3,58.9 211.4,69.9 264.6,83.8 317.7,98.4 370.9,110.2 424.0,131.6"/>
+<g class="row bias" data-tip="&lt;10k · 당뇨 유병률 24.3%" tabindex="0">
+<circle class="hit-dot" cx="52.0" cy="48.8" r="12"/>
+<circle class="dot" cx="52.0" cy="48.8" r="4.5"/>
+</g>
+<g class="row bias" data-tip="10-15k · 당뇨 유병률 26.2%" tabindex="0">
+<circle class="hit-dot" cx="105.1" cy="39.2" r="12"/>
+<circle class="dot" cx="105.1" cy="39.2" r="4.5"/>
+</g>
+<g class="row bias" data-tip="15-20k · 당뇨 유병률 22.3%" tabindex="0">
+<circle class="hit-dot" cx="158.3" cy="58.9" r="12"/>
+<circle class="dot" cx="158.3" cy="58.9" r="4.5"/>
+</g>
+<g class="row bias" data-tip="20-25k · 당뇨 유병률 20.1%" tabindex="0">
+<circle class="hit-dot" cx="211.4" cy="69.9" r="12"/>
+<circle class="dot" cx="211.4" cy="69.9" r="4.5"/>
+</g>
+<g class="row bias" data-tip="25-35k · 당뇨 유병률 17.4%" tabindex="0">
+<circle class="hit-dot" cx="264.6" cy="83.8" r="12"/>
+<circle class="dot" cx="264.6" cy="83.8" r="4.5"/>
+</g>
+<g class="row bias" data-tip="35-50k · 당뇨 유병률 14.5%" tabindex="0">
+<circle class="hit-dot" cx="317.7" cy="98.4" r="12"/>
+<circle class="dot" cx="317.7" cy="98.4" r="4.5"/>
+</g>
+<g class="row bias" data-tip="50-75k · 당뇨 유병률 12.2%" tabindex="0">
+<circle class="hit-dot" cx="370.9" cy="110.2" r="12"/>
+<circle class="dot" cx="370.9" cy="110.2" r="4.5"/>
+</g>
+<g class="row bias" data-tip="75k+ · 당뇨 유병률 8.0%" tabindex="0">
+<circle class="hit-dot" cx="424.0" cy="131.6" r="12"/>
+<circle class="dot" cx="424.0" cy="131.6" r="4.5"/>
+</g>
+<text class="endlabel bias" x="63.0" y="37.8">24.3%</text>
+<text class="endlabel bias" x="418.0" y="120.6" text-anchor="end">8.0%</text>
+<text class="axtitle" x="238" y="220" text-anchor="middle">연간 가구소득 구간 (8분위)</text>
+</svg></div>
+      <details>
+        <summary>수치를 표로 보기</summary>
+        <table><thead><tr><th>소득 구간</th><th>비용장벽</th><th>당뇨</th></tr></thead><tbody><tr><td>&lt;10k</td><td class="n">21.37%</td><td class="n">24.29%</td></tr><tr><td>10-15k</td><td class="n">18.71%</td><td class="n">26.19%</td></tr><tr><td>15-20k</td><td class="n">17.43%</td><td class="n">22.31%</td></tr><tr><td>20-25k</td><td class="n">14.81%</td><td class="n">20.13%</td></tr><tr><td>25-35k</td><td class="n">11.29%</td><td class="n">17.40%</td></tr><tr><td>35-50k</td><td class="n">8.28%</td><td class="n">14.51%</td></tr><tr><td>50-75k</td><td class="n">6.06%</td><td class="n">12.18%</td></tr><tr><td>75k+</td><td class="n">3.01%</td><td class="n">7.96%</td></tr></tbody></table>
+      </details>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="insight-head">비즈니스 인사이트</h2>
+    <p class="insight-sub">접근성 지표는 &quot;누구를 도울 것인가&quot;를 정하는 데 쓰고, &quot;누가 아플 것인가&quot;를 맞히거나 사업 성과를 재는 데는 쓰지 않는다.</p>
+    <div class="flow">
+      <article class="step"><span class="k">누구에게 · 시장</span>
+        <h3>타깃 세그먼트가 데이터로 특정된다</h3>
+        <p>비용 때문에 진료를 포기한 사람 8.4%(21,354명). 저소득 두 구간에서는 21.4%·18.7%로 밀도가 두 배 이상이다.</p></article>
+      <article class="step"><span class="k">무엇을 · 제품</span>
+        <h3>검사 없이 문진만으로 선별이 가능하다</h3>
+        <p>예측력 대부분이 앱에서 직접 답할 수 있는 항목에서 나온다. 부스팅 트리로 올려도 0.830이라 복잡한 모델의 실익이 작다.</p></article>
+      <article class="step dont"><span class="k">하지 말 것 · 리스크</span>
+        <h3>접근성 데이터로 개인을 타깃팅하지 않는다</h3>
+        <p>세 지표가 한쪽으로 크게 치우쳐 개인을 구분할 정보량이 없다. 세그먼트 규모 추정에만 쓴다.</p></article>
+      <article class="step"><span class="k">어떻게 잴 것 · KPI</span>
+        <h3>검진율을 성과지표로 삼지 않는다</h3>
+        <p>검진을 늘리면 미발견 환자가 진단되며 유병률이 오른다. 진단율과 관리 성과를 분리해 측정해야 한다.</p></article>
+    </div>
+  </section>
+
+  <section class="close">
+    <div class="panel">
+      <h2>이 결론을 흔들 수 있는 것</h2>
+      <ul>
+        <li><b>역인과</b> — 가장 약한 고리. 건강이 나빠 의료가 더 필요했고, 그 결과 비용 부담을 겪었을 수 있다.</li>
+        <li><b>검출편향</b> — 진단 기록은 의료를 이용해야 남는다. 합성데이터에서 인과가 전혀 없어도 OR이 1.02 → 2.69로 부풀려졌다.</li>
+        <li><b>자가보고</b> — 당뇨 변수는 유병이 아니라 &quot;진단받은 적 있는지&quot;를 묻는다.</li>
+        <li><b>대표성</b> — 표본가중치가 없어 전국 대표성을 보정할 수 없다.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h2>이 한계를 넘으려면 필요한 데이터</h2>
+      <ul>
+        <li><b>종단 패널</b> — 같은 사람을 추적해 시간 순서를 확보하면 역인과가 설계 단계에서 차단된다.</li>
+        <li><b>검사 기반 결과지표</b> — HbA1c 실측치를 쓰면 미진단 유병자가 포착돼 검출편향이 사라진다.</li>
+        <li><b>주·연도가 있는 원자료</b> — 메디케이드 확대의 주별 시차를 준실험(이중차분)으로 쓸 수 있다.</li>
+        <li><b>연속형 소득</b> — 최상위 구간에 표본 35.6%가 몰려 있어 구배가 실제보다 완만할 수 있다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    출처 — CDC BRFSS 2015 기반 Diabetes Health Indicators Dataset (253,680행 × 22열).
+    모든 수치는 <span class="mono">notebooks/1.0-healthcare-access-analysis.ipynb</span>의 실행 결과에서 가져왔습니다.
+    오즈비는 statsmodels 로지스틱 회귀 기준, 예측 성능은 25% 홀드아웃 테스트셋 기준입니다.
+  </footer>
+</div>
+
+<div id="tip" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  var tip = document.getElementById("tip");
+  function show(cx, cy, text) {
+    tip.textContent = text;
+    tip.style.left = cx + "px";
+    tip.style.top = cy + "px";
+    tip.classList.add("on");
+  }
+  function hide() { tip.classList.remove("on"); }
+  document.querySelectorAll("[data-tip]").forEach(function (el) {
+    el.addEventListener("mousemove", function (e) { show(e.clientX, e.clientY, el.dataset.tip); });
+    el.addEventListener("mouseleave", hide);
+    el.addEventListener("focus", function () {
+      var b = el.getBoundingClientRect();
+      show(b.left + b.width / 2, b.top + b.height / 2, el.dataset.tip);
+    });
+    el.addEventListener("blur", hide);
+  });
+  window.addEventListener("scroll", hide, { passive: true });
+})();
+</script>
