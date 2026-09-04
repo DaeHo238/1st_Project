@@ -29,6 +29,7 @@ body{
   background:var(--ground); color:var(--ink);
   font-family:"IBM Plex Sans KR","Malgun Gothic",system-ui,sans-serif;
   line-height:1.65; -webkit-font-smoothing:antialiased;
+  word-break:keep-all;
 }
 .wrap{max-width:1080px; margin:0 auto; padding:40px 24px 64px; display:flex; flex-direction:column; gap:38px}
 .mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
@@ -39,7 +40,7 @@ h1{font-size:clamp(26px,3.4vw,38px); line-height:1.24; font-weight:600; margin:0
   letter-spacing:-.015em; text-wrap:balance; max-width:22ch}
 .verdict{font-family:"Gowun Batang","Batang",serif; font-weight:700;
   font-size:clamp(19px,2.3vw,26px); line-height:1.55; margin:22px 0 0; padding-left:20px;
-  border-left:3px solid var(--signal); max-width:44ch; text-wrap:balance}
+  border-left:3px solid var(--signal)}
 .verdict em{font-style:normal; color:var(--signal)}
 
 .facts{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px;
@@ -143,7 +144,7 @@ footer{color:var(--ink-3); font-size:12px; line-height:1.7; border-top:1px solid
   <header>
     <p class="eyebrow">BRFSS 2015 · 미국 성인 253,680명 · 22개 변수</p>
     <h1>의료 접근성은 건강 결과에 영향을 미치는가</h1>
-    <p class="verdict">비용 때문에 진료를 못 받은 경험은 나쁜 건강 상태와 <em>확실하게 함께 나타난다.</em> 다만 그것이 원인인지는 이 데이터로 알 수 없다.</p>
+    <p class="verdict">비용 때문에 진료를 못 받은 경험은 나쁜 건강 상태와 <em>확실하게 함께 나타난다.</em><br>다만 그것이 원인인지는 이 데이터로 알 수 없다.</p>
   </header>
 
   <dl class="facts">
