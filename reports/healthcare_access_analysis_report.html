@@ -7802,7 +7802,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="%EC%9D%98%EB%A3%8C-%EC%A0%91%EA%B7%BC%EC%84%B1%EC%9D%B4-%EA%B1%B4%EA%B0%95-%EA%B2%B0%EA%B3%BC%EC%97%90-%EB%AF%B8%EC%B9%98%EB%8A%94-%EC%98%81%ED%96%A5-%EB%B6%84%EC%84%9D">의료 접근성이 건강 결과에 미치는 영향 분석<a class="anchor-link" href="#%EC%9D%98%EB%A3%8C-%EC%A0%91%EA%B7%BC%EC%84%B1%EC%9D%B4-%EA%B1%B4%EA%B0%95-%EA%B2%B0%EA%B3%BC%EC%97%90-%EB%AF%B8%EC%B9%98%EB%8A%94-%EC%98%81%ED%96%A5-%EB%B6%84%EC%84%9D">¶</a></h1><p>소득이 낮은 집단일수록 당뇨병에 더 많이 노출된다는 보도가 이 분석의 출발점이다. 이 격차가 소득 수준 자체의 문제인지, 소득이 낮을수록 정기검진·병원 방문 같은 의료 서비스에 접근하기 어려워서 생기는 결과인지는 분명하지 않다. 의료 접근성이라는 매개 요인을 직접 측정할 수 있는 변수가 있다면, 이 질문에 답할 실마리가 될 수 있다.</p>
+<h1 id="%EC%9D%98%EB%A3%8C-%EC%A0%91%EA%B7%BC%EC%84%B1%EC%9D%B4-%EA%B1%B4%EA%B0%95-%EA%B2%B0%EA%B3%BC%EC%97%90-%EB%AF%B8%EC%B9%98%EB%8A%94-%EC%98%81%ED%96%A5-%EB%B6%84%EC%84%9D">의료 접근성이 건강 결과에 미치는 영향 분석<a class="anchor-link" href="#%EC%9D%98%EB%A3%8C-%EC%A0%91%EA%B7%BC%EC%84%B1%EC%9D%B4-%EA%B1%B4%EA%B0%95-%EA%B2%B0%EA%B3%BC%EC%97%90-%EB%AF%B8%EC%B9%98%EB%8A%94-%EC%98%81%ED%96%A5-%EB%B6%84%EC%84%9D">¶</a></h1><p>소득이 낮은 집단일수록 당뇨병에 더 많이 노출된다는 보도를 보고, 그 격차의 원인이 소득 그 자체가 아니라 의료 접근성 차이일 수 있다는 데 주목했다 — 소득이 낮아 정기검진·병원 방문 같은 의료 서비스에 접근하기 어려운 것이 건강 격차의 실질적 원인일 수 있다는 것이다. 그래서 이 분석은 소득이 아니라 <strong>의료 접근성</strong>을 핵심 변수로 놓고, 소득은 교란변수로 통제하면서 접근성이 건강 결과에 독립적인 영향을 미치는지를 확인한다.</p>
 <p>BRFSS 2015 당뇨병 건강지표 데이터셋을 이용해 의료 접근성(<code>AnyHealthcare</code>, <code>NoDocbcCost</code>, <code>CholCheck</code>)이 건강 결과(<code>Diabetes_binary</code>, <code>GenHlth</code>, <code>PhysHlth</code>, <code>HighBP</code>, <code>HighChol</code>)에 미치는 영향을 분석한다.</p>
 <p>소득(<code>Income</code>), 연령(<code>Age</code>), 교육수준(<code>Education</code>)을 교란변수로 통제하여 접근성 변수의 독립적 효과를 추정하는 것이 핵심 질문이다. 이 데이터셋을 고른 이유와 데이터 자체의 성격은 1절에서 자세히 다룬다.</p>
 <p><strong>진행 순서</strong>: 데이터 이해 → 데이터 전처리 → EDA → 교차분석·카이제곱검정 → 교란변수 선정 → 소득 층화분석 → 기초 모델링(로지스틱 회귀) → 예측 모델링 → 합성데이터 검증 → 종합 결론</p>
@@ -7861,7 +7861,7 @@ a.anchor-link {
 <li><strong>행 하나의 의미</strong>: 2015년 미국 CDC의 BRFSS(Behavioral Risk Factor Surveillance System, 행동위험요인감시체계) 전화 설문에 응답한 성인 1명</li>
 <li><strong>기간과 범위</strong>: 2015년 한 해, 미국 성인 253,680명</li>
 <li><strong>컬럼 구성</strong>: 결과지표 1개(<code>Diabetes_binary</code>), 의료 접근성 3개, 만성질환·생활습관 지표 다수, 인구통계 4개(<code>Sex</code>, <code>Age</code>, <code>Education</code>, <code>Income</code>) — 전체 22개 컬럼의 의미와 코드는 <a href="../references/data_dictionary.md"><code>references/data_dictionary.md</code></a>에 정리했다.</li>
-<li><strong>출처와 저작권</strong>: CDC BRFSS 원자료는 미국 연방정부 공공데이터로 저작권 제한 없이 공개돼 있다. 이 프로젝트에서 쓰는 CSV는 Kaggle에 "Diabetes Health Indicators Dataset"이라는 이름으로 재배포된 파생 버전이다.</li>
+<li><strong>출처와 저작권</strong>: CDC BRFSS 원자료는 미국 연방정부 공공데이터로 저작권 제한 없이 공개돼 있다. 이 프로젝트에서 쓰는 CSV는 Kaggle에 <a href="https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset">Diabetes Health Indicators Dataset</a>(Alex Teboul 재배포, <strong>CC0: Public Domain</strong> 라이선스)이라는 이름으로 재배포된 파생 버전이다.</li>
 </ul>
 </div>
 </div>
@@ -9441,7 +9441,7 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 <h3 id="7.1-%EB%AA%A8%EB%8D%B8-%EA%B0%80%EC%A0%95-%EC%A0%90%EA%B2%80:-%EB%8B%A4%EC%A4%91%EA%B3%B5%EC%84%A0%EC%84%B1(VIF)-&amp;-%EC%84%A0%ED%98%95%EC%84%B1(Box-Tidwell)">7.1 모델 가정 점검: 다중공선성(VIF) &amp; 선형성(Box-Tidwell)<a class="anchor-link" href="#7.1-%EB%AA%A8%EB%8D%B8-%EA%B0%80%EC%A0%95-%EC%A0%90%EA%B2%80:-%EB%8B%A4%EC%A4%91%EA%B3%B5%EC%84%A0%EC%84%B1(VIF)-&amp;-%EC%84%A0%ED%98%95%EC%84%B1(Box-Tidwell)">¶</a></h3><p>앞 절의 오즈비를 신뢰하려면 로지스틱 회귀가 전제하는 두 가지 조건을 확인해야 한다.</p>
 <p><strong>(1) 다중공선성</strong>: 예측변수끼리 강하게 겹치면 "이 효과가 어느 변수 몫인지"를 모델이 가려내지 못한다. 계수가 편향되는 것은 아니지만 추정이 불안정해져 표준오차가 커지고 신뢰구간이 넓어지며, 표본이 조금만 달라져도 값이 크게 흔들린다. 이 절의 목적이 접근성 변수 <strong>각각의 독립적 효과</strong>를 읽는 것이므로 반드시 짚어야 한다.</p>
 <p><strong>(2) 로짓 선형성</strong>: 로지스틱 회귀는 연속형 예측변수가 로그오즈(logit)와 직선 관계라고 가정한다. <code>BMI</code>로 치면 20에서 25로 오를 때와 35에서 40으로 오를 때 당뇨 로그오즈가 같은 폭으로 증가해야 한다는 뜻인데, 실제 관계는 곡선일 수 있다. 이 가정이 깨지면 해당 변수의 계수가 구간별 실제 관계를 제대로 대표하지 못한다.</p>
-<p>선형성 가정은 연속형 변수에만 해당하므로, 이 데이터셋에서 유일한 연속형 변수인 <code>BMI</code>만 검정한다(이진 변수와 순서형 코드는 대상이 아니다).</p>
+<p>이 가정은 모델에 연속형(선형) 항으로 넣은 예측변수 전체에 적용된다. 이 데이터셋에서 실수값을 갖는 연속형 변수는 <code>BMI</code>뿐이므로 Box-Tidwell 검정은 <code>BMI</code>에 대해서만 진행한다. 다만 <code>Income</code>, <code>Education</code>, <code>Age</code>도 순서형 정수 코드를 범주형으로 더미화하지 않고 선형항 그대로 넣었으므로 같은 가정이 걸려 있다 — 이 세 변수는 Box-Tidwell 대신 범주형(더미) 모델과 비교하는 방식으로 7.1절 끝에서 별도로 확인한다(이진 변수는 애초에 직선/곡선을 구분할 수 없는 두 점이라 대상이 아니다).</p>
 </div>
 </div>
 </div>
@@ -9836,6 +9836,165 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 </div>
 </div>
 </div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=38cdc3aa">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="7.1b-Income-/-Education-/-Age-%EC%84%A0%ED%98%95%EC%84%B1-%ED%99%95%EC%9D%B8">7.1b <code>Income</code> / <code>Education</code> / <code>Age</code> 선형성 확인<a class="anchor-link" href="#7.1b-Income-/-Education-/-Age-%EC%84%A0%ED%98%95%EC%84%B1-%ED%99%95%EC%9D%B8">¶</a></h3><p><code>BMI</code>와 마찬가지로 <code>Income</code>, <code>Education</code>, <code>Age</code>도 순서형 코드를 범주형으로 나누지 않고 정수 그대로 선형항에 넣었으므로, 로짓과의 선형 관계 가정이 똑같이 적용된다. 세 변수는 6~13개의 이산 구간뿐이라 Box-Tidwell(연속형 변수 대상)보다는, 세 변수를 모두 범주형(<code>C()</code>, 구간마다 더미변수)으로 바꾼 모델과 직접 비교해 접근성 변수의 오즈비가 흔들리는지로 실질적 영향을 확인한다.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=ae210236">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Income/Education/Age를 선형항 대신 범주형(더미)으로 바꿔, 순서형 코드를 그대로 넣은 것이</span>
+<span class="c1"># 접근성 변수의 오즈비 결론에 영향을 주는지 확인</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">chi2</span>
+
+<span class="n">cat_model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">logit</span><span class="p">(</span>
+    <span class="s2">"Diabetes_binary ~ AnyHealthcare + NoDocbcCost + CholCheck + C(Income) + C(Education) + C(Age) + Sex + BMI"</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">df_eda</span>
+<span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">disp</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">cat_ci</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">cat_model</span><span class="o">.</span><span class="n">conf_int</span><span class="p">())</span>
+<span class="n">cat_ci</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"ci_low"</span><span class="p">,</span> <span class="s2">"ci_high"</span><span class="p">]</span>
+<span class="n">cat_or</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">"odds_ratio"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">cat_model</span><span class="o">.</span><span class="n">params</span><span class="p">),</span>
+    <span class="s2">"ci_low"</span><span class="p">:</span> <span class="n">cat_ci</span><span class="p">[</span><span class="s2">"ci_low"</span><span class="p">],</span>
+    <span class="s2">"ci_high"</span><span class="p">:</span> <span class="n">cat_ci</span><span class="p">[</span><span class="s2">"ci_high"</span><span class="p">],</span>
+    <span class="s2">"p_value"</span><span class="p">:</span> <span class="n">cat_model</span><span class="o">.</span><span class="n">pvalues</span>
+<span class="p">})</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">access_vars</span><span class="p">]</span>
+
+<span class="n">compare_linearity</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span>
+    <span class="n">adj_or</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">access_vars</span><span class="p">,</span> <span class="p">[</span><span class="s2">"odds_ratio"</span><span class="p">,</span> <span class="s2">"ci_low"</span><span class="p">,</span> <span class="s2">"ci_high"</span><span class="p">,</span> <span class="s2">"p_value"</span><span class="p">]]</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">처리</span><span class="o">=</span><span class="s2">"선형(기존 모델)"</span><span class="p">),</span>
+    <span class="n">cat_or</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">처리</span><span class="o">=</span><span class="s2">"범주형(Income/Education/Age 더미화)"</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="c1"># 우도비검정: 범주형 모델이 선형 모델보다 유의하게 더 잘 맞는지</span>
+<span class="n">lr_stat</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">cat_model</span><span class="o">.</span><span class="n">llf</span> <span class="o">-</span> <span class="n">adj_model</span><span class="o">.</span><span class="n">llf</span><span class="p">)</span>
+<span class="n">lr_dof</span> <span class="o">=</span> <span class="n">cat_model</span><span class="o">.</span><span class="n">df_model</span> <span class="o">-</span> <span class="n">adj_model</span><span class="o">.</span><span class="n">df_model</span>
+<span class="n">lr_p</span> <span class="o">=</span> <span class="n">chi2</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">lr_stat</span><span class="p">,</span> <span class="n">lr_dof</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"LR test (범주형 vs 선형): stat=</span><span class="si">{</span><span class="n">lr_stat</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">, dof=</span><span class="si">{</span><span class="n">lr_dof</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">, p=</span><span class="si">{</span><span class="n">lr_p</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">compare_linearity</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>LR test (범주형 vs 선형): stat=1634.6, dof=21, p=0
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[22]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>odds_ratio</th>
+<th>ci_low</th>
+<th>ci_high</th>
+<th>p_value</th>
+<th>처리</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>AnyHealthcare</th>
+<td>1.2271</td>
+<td>1.1522</td>
+<td>1.3068</td>
+<td>0.0</td>
+<td>선형(기존 모델)</td>
+</tr>
+<tr>
+<th>NoDocbcCost</th>
+<td>1.3666</td>
+<td>1.3098</td>
+<td>1.4258</td>
+<td>0.0</td>
+<td>선형(기존 모델)</td>
+</tr>
+<tr>
+<th>CholCheck</th>
+<td>5.0983</td>
+<td>4.4655</td>
+<td>5.8208</td>
+<td>0.0</td>
+<td>선형(기존 모델)</td>
+</tr>
+<tr>
+<th>AnyHealthcare</th>
+<td>1.2165</td>
+<td>1.1418</td>
+<td>1.2961</td>
+<td>0.0</td>
+<td>범주형(Income/Education/Age 더미화)</td>
+</tr>
+<tr>
+<th>NoDocbcCost</th>
+<td>1.3215</td>
+<td>1.2662</td>
+<td>1.3793</td>
+<td>0.0</td>
+<td>범주형(Income/Education/Age 더미화)</td>
+</tr>
+<tr>
+<th>CholCheck</th>
+<td>5.1259</td>
+<td>4.4897</td>
+<td>5.8522</td>
+<td>0.0</td>
+<td>범주형(Income/Education/Age 더미화)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7ca78590">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>우도비검정(likelihood ratio test)으로 보면 범주형 모델이 선형 모델보다 통계적으로 유의하게 더 잘 맞는다(LR=1634.6, df=21, p&lt;0.001) — <code>Income</code>/<code>Education</code>/<code>Age</code>를 정수 그대로 넣는 선형 가정이 엄밀하게는 성립하지 않는다는 뜻이다. 다만 접근성 변수의 오즈비는 거의 흔들리지 않는다(<code>AnyHealthcare</code> 1.227→1.217, <code>NoDocbcCost</code> 1.367→1.322, <code>CholCheck</code> 5.098→5.126이고, 세 변수 모두 95% 신뢰구간이 두 모델에서 크게 겹친다). <code>BMI</code>에서 확인한 것과 같은 패턴이다 — 세 변수 자체의 비선형성은 실재하지만, 통제변수로만 쓰는 이번 분석의 목적(접근성 변수의 독립적 효과 추정)에서는 이 비선형성이 결론을 바꾸지 않는다. <code>NoDocbcCost</code>가 상대적으로 더 크게 움직인 것(약 -3.3%p)은 소득·연령 구간 사이의 비선형 관계가 세 접근성 변수 중 이 변수와 가장 겹쳐 있다는 뜻으로 읽을 수 있지만, 여전히 유의하고(p&lt;0.001) 방향도 그대로다.</p>
+</div>
+</div>
+</div>
+</div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=29c54f7a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -9851,7 +10010,7 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">adj_model_nocc</span><span class="p">,</span> <span class="n">adj_or_nocc</span> <span class="o">=</span> <span class="n">fit_logit_or</span><span class="p">(</span>
@@ -9874,7 +10033,7 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[22]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[23]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -9946,7 +10105,7 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
@@ -9988,7 +10147,7 @@ Spearman corr Income vs Diabetes_binary: -0.16330469335765088
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 왜 변수마다 다르게 반응하는지: CholCheck와의 상관관계로 확인</span>
@@ -10050,7 +10209,7 @@ Name: AnyHealthcare, dtype: float64
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">unadj_model_g</span><span class="p">,</span> <span class="n">unadj_or_g</span> <span class="o">=</span> <span class="n">fit_logit_or</span><span class="p">(</span>
@@ -10077,7 +10236,7 @@ Name: AnyHealthcare, dtype: float64
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[25]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[26]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -10200,7 +10359,7 @@ Name: AnyHealthcare, dtype: float64
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
@@ -10272,7 +10431,7 @@ Model B (full features) ROC-AUC: 0.8219
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">StratifiedKFold</span><span class="p">,</span> <span class="n">cross_val_score</span>
@@ -10317,7 +10476,7 @@ Model B 5-fold CV ROC-AUC: 0.8225 (+/- 0.0033)  folds=[0.8269 0.8243 0.822  0.82
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.dummy</span><span class="w"> </span><span class="kn">import</span> <span class="n">DummyClassifier</span>
@@ -10350,7 +10509,7 @@ Model B 5-fold CV ROC-AUC: 0.8225 (+/- 0.0033)  folds=[0.8269 0.8243 0.822  0.82
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[28]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -10417,7 +10576,7 @@ Model B 5-fold CV ROC-AUC: 0.8225 (+/- 0.0033)  folds=[0.8269 0.8243 0.822  0.82
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -10466,7 +10625,7 @@ Model B 5-fold CV ROC-AUC: 0.8225 (+/- 0.0033)  folds=[0.8269 0.8243 0.822  0.82
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"=== Model A (access-only) classification report (threshold 0.5) ==="</span><span class="p">)</span>
@@ -10552,7 +10711,7 @@ weighted avg       0.86      0.73      0.77     63420
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">feature_names</span> <span class="o">=</span> <span class="n">full_features</span>
@@ -10587,7 +10746,7 @@ weighted avg       0.86      0.73      0.77     63420
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[31]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[32]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -10701,7 +10860,7 @@ weighted avg       0.86      0.73      0.77     63420
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [33]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">HistGradientBoostingClassifier</span>
@@ -10770,7 +10929,7 @@ Model C (full, 부스팅 트리)        0.8295           0.8302    0.7213      0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [33]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [34]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -10843,7 +11002,7 @@ Model C (full, 부스팅 트리)        0.8295           0.8302    0.7213      0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [34]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [35]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
@@ -10879,7 +11038,7 @@ Model C (full, 부스팅 트리)        0.8295           0.8302    0.7213      0
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[34]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[35]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -10927,7 +11086,7 @@ Model C (full, 부스팅 트리)        0.8295           0.8302    0.7213      0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [35]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [36]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
@@ -10987,7 +11146,7 @@ Model C (full, 부스팅 트리)        0.8295           0.8302    0.7213      0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [36]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [37]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">rng2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
@@ -11017,7 +11176,7 @@ Model C (full, 부스팅 트리)        0.8295           0.8302    0.7213      0
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[36]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[37]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -11061,7 +11220,7 @@ Model C (full, 부스팅 트리)        0.8295           0.8302    0.7213      0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [37]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [38]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">))</span>

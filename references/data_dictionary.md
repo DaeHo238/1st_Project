@@ -1,7 +1,7 @@
 # 데이터 설명서 (Data Dictionary)
 
 **파일**: `data/raw/diabetes_binary_health_indicators_BRFSS2015.csv`
-**출처**: CDC BRFSS(Behavioral Risk Factor Surveillance System) 2015 설문조사를 기반으로 가공된 공개 파생 데이터셋
+**출처**: CDC BRFSS(Behavioral Risk Factor Surveillance System) 2015 설문조사를 기반으로 가공된 공개 파생 데이터셋 — Kaggle, [Diabetes Health Indicators Dataset](https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset)(Alex Teboul 재배포, CC0: Public Domain)
 **규모**: 253,680행 × 22열, 결측치 없음
 **단위**: 모든 컬럼이 `float64`로 저장돼 있지만 실제로는 이진(0/1) 또는 순서형 구간 코드다.
 
